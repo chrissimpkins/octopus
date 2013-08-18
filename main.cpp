@@ -3,7 +3,7 @@
 */
 
 // Constant definitions
-#define VERSION string("0.1.3")
+#define VERSION string("0.1.4")
 #define APPLICATION string("Octopress Commander")
 #define COPYRIGHT string("Copyright 2013 Christopher Simpkins")
 #define LICENSE string("MIT License")
@@ -18,6 +18,7 @@
 #include "main.h"
 #include "opts.h"
 #include "print.h"
+#include "io.h"
 
 // Standard Library namespace
 using std::string;
@@ -143,6 +144,22 @@ int main(int argc, char const *argv[]) {
 				print("Local server is running.");
 			}
 		}
+		// READ ---------------------------------------------------------
+		else if (cmd == "read"){
+			if (argc == 3){
+				Options opt(argc, clvr);
+				string infile = opt.get_last_positional();
+				IO inout(infile);
+				if (inout.is_file_good()){
+					cout << inout.read_file() << flush;
+				}
+			}
+			else{
+				print_error("Missing the input file path.");
+				print_error("Usage:");
+				print_error("\toc read <filepath>");
+			}
+		}
 		// WATCH --------------------------------------------------------
 		else if (cmd == "watch") {
 			const char * watch_string = "bundle exec rake watch";
@@ -204,6 +221,13 @@ int main(int argc, char const *argv[]) {
 			}
 			else{
 				print("The tests completed with no errors. All is well.");
+			}
+		}
+		//otherwise if a second argument is present print error message that the second argument is not a known command or option
+		else {
+			if (argv[1]) {
+				print_error(clvr.at(1) + " is not a known command.");
+				return 1;
 			}
 		}
 	}
