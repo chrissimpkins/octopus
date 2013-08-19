@@ -322,9 +322,9 @@ inline void show_version(){
 *  Current Date/Time
 *******************************************/
 inline string currentDateTime() {
-    time_t     now = time(0);
-    struct tm  tstruct;
-    char       buf[80];
+    time_t now = time(0);
+    struct tm tstruct;
+    char buf[80];
     tstruct = *localtime(&now);
     strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
     return buf;
@@ -334,9 +334,9 @@ inline string currentDateTime() {
 *  Current Date
 *******************************************/
 inline string currentDate() {
-	time_t     now = time(0);
-    struct tm  tstruct;
-    char       buf[80];
+	time_t now = time(0);
+    struct tm tstruct;
+    char buf[80];
     tstruct = *localtime(&now);
     strftime(buf, sizeof(buf), "%Y-%m-%d", &tstruct);
     return buf;
@@ -346,9 +346,9 @@ inline string currentDate() {
 *  Current Time
 *******************************************/
 inline string currentTime() {
-	time_t     now = time(0);
-    struct tm  tstruct;
-    char       buf[80];
+	time_t now = time(0);
+    struct tm tstruct;
+    char buf[80];
     tstruct = *localtime(&now);
     strftime(buf, sizeof(buf), "%R", &tstruct);
     return buf;
@@ -363,7 +363,6 @@ inline string replaceChar(string str, char ch1, char ch2) {
     if (str[i] == ch1)
       str[i] = ch2;
   }
-
   return str;
 }
 
