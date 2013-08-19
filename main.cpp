@@ -3,7 +3,7 @@
 */
 
 // Constant definitions
-#define VERSION string("0.1.5")
+#define VERSION string("0.1.6")
 #define APPLICATION string("Octopress Commander")
 #define COPYRIGHT string("Copyright 2013 Christopher Simpkins")
 #define LICENSE string("MIT License")
@@ -85,10 +85,12 @@ int main(int argc, char const *argv[]) {
 					string post_title_md = post_title + ".markdown";
 					string post_path = "source/_posts/" + post_title_md;
 					string post_head_string = getPostHeader(title, currentDate(), currentTime());
+					//write to file
 					IO newpost(post_path);
 					newpost.write_file(post_head_string);
 					string response_string = "Your new post '" + post_title_md + "' has been created in the path source/_posts.";
 					print(response_string);
+					return 0;
 				}
 			}
 		}
@@ -108,6 +110,7 @@ int main(int argc, char const *argv[]) {
 				print("Creating new page markdown file entitled: '" + title + "'");
 				//run command
 				system(npc_c);
+				return 0;
 			}
 		}
 		// PUBLISH ------------------------------------------------------
@@ -195,44 +198,44 @@ int main(int argc, char const *argv[]) {
 			print(" ");
 			// Git test
 			if (system("which git") == 0){
-				print("> Git is installed.");
-				print(" ");
+				print("> Git is installed.\n");
 			}
 			else{
 				fail = 1;
-				print("> Error: Git is not installed.");
-				print(" ");
+				print("> Error: Git is not installed.\n");
 			}
 			if (system("which ruby") == 0) {
-				print("> Ruby is installed. Please confirm that it is version 1.9.3 in the line below");
-				print(" ");
+				print("> Ruby is installed. Please confirm that it is version 1.9.3 in the line below:\n");
 				system("ruby --version");
-				print(" ");
+				print("\n");
 			}
 			else{
 				fail = 1;
-				print("> Error: Ruby is not installed.");
-				print(" ");
+				print("> Error: Ruby is not installed.\n");
 			}
 			// Rake test
 			if (system("which rake") == 0){
-				print("> Rake is installed.");
-				print(" ");
+				print("> Rake is installed.\n");
 			}
 			else{
 				fail = 1;
-				print("> Error: Rake is not installed.");
-				print(" ");
+				print("> Error: Rake is not installed.\n");
 			}
 			// Bundle test
 			if (system("which bundle") == 0) {
-				print("> Bundle is installed.");
-				print(" ");
+				print("> Bundle is installed.\n");
 			}
 			else {
 				fail = 1;
-				print("> Error: Bundle is not installed.");
-				print(" ");
+				print("> Error: Bundle is not installed.\n");
+			}
+			//rsync test
+			if (system("which rsync") == 0) {
+				print("> rsync is installed.\n");
+			}
+			else {
+				fail = 1;
+				print("> rsync is not installed.  This is only relevant if you use it to deploy your site.\n");
 			}
 			print("...Completed Octopress Commander tests");
 			if (fail == 1){
@@ -243,8 +246,7 @@ int main(int argc, char const *argv[]) {
 			}
 		}
 		else if (cmd == "test") {
-			string test = getPostHeader("This is a Test Post", currentDate(), currentTime());
-			cout << test << endl;
+			// used for testing purposes.
 		}
 		//otherwise if a second argument is present print error message that the second argument is not a known command or option
 		else {
@@ -288,10 +290,11 @@ inline void show_help() {
 	// HELP INFO
 	print("Available Commands:");
 	print("\thelp : view help documentation");
-	print("\tpage <page name>: create a new page and specify name");
-	print("\tpost <post name>: create a new post and specify name");
+	print("\tpage <page name>: create a new page and specify file name");
+	print("\tpost <post name>: create a new post and specify file name");
 	print("\tpreview : open local server to view your site");
 	print("\tpublish [--heroku] : publish your site");
+	print("\tread <post/page path>: read your post/page in terminal");
 	print("\twatch : watch the source and SASS directories for changes");
 	print("\tversion: view current version number");
 }
