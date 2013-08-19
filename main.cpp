@@ -3,7 +3,7 @@
 */
 
 // Constant definitions
-#define VERSION string("0.1.4")
+#define VERSION string("0.1.5")
 #define APPLICATION string("Octopress Commander")
 #define COPYRIGHT string("Copyright 2013 Christopher Simpkins")
 #define LICENSE string("MIT License")
@@ -13,6 +13,7 @@
 #include <string>
 #include <cstdlib>
 #include <vector>
+#include <algorithm>
 
 // Project headers
 #include "main.h"
@@ -31,7 +32,7 @@ using std::endl;
 /******************************************
 *  G'day, I'm main()
 *******************************************/
-// Handles the command line parsing
+// Handles command line parsing
 
 int main(int argc, char const *argv[]) {
 	//user did not enter enough arguments in the command
@@ -59,25 +60,43 @@ int main(int argc, char const *argv[]) {
 		else if (cmd == "post") {
 			if (argc < 3){
 				print_error("Please include the title for your post after the command.");
-				print_error("example : oc post 'A cool post title'");
+				print_error("Usage : oc post 'A cool post title'");
 				return 1;
 			}
 			else{
-				//get the argument
-				const string title = clv.at(2);
-				//create the command
-				const string new_post_command = "bundle exec rake new_post['" + title + "']";
-				const char * npc_c = new_post_command.c_str();
-				print("Creating new post markdown file entitled: '" + title + "'");
-				//run command
-				system(npc_c);
+				Options opt(argc, clvr);
+				const string title = opt.get_last_positional();
+				//user requests octopress generation of the post
+				if (opt.contains("--octo")){
+					//create the command
+					const string new_post_command = "bundle exec rake new_post['" + title + "']";
+					const char * npc_c = new_post_command.c_str();
+					print("Creating new post markdown file entitled: '" + title + "'");
+					//run command
+					system(npc_c);
+					return 0;
+				}
+				else {
+					//create the filepath string
+					string date = currentDate();
+					string long_title = date + '-' + title;
+					string post_title = replaceChar(long_title, ' ', '-');
+					std::transform(post_title.begin(), post_title.end(), post_title.begin(), ::tolower);
+					string post_title_md = post_title + ".markdown";
+					string post_path = "source/_posts/" + post_title_md;
+					string post_head_string = getPostHeader(title, currentDate(), currentTime());
+					IO newpost(post_path);
+					newpost.write_file(post_head_string);
+					string response_string = "Your new post '" + post_title_md + "' has been created in the path source/_posts.";
+					print(response_string);
+				}
 			}
 		}
 		// NEW PAGE -----------------------------------------------------
 		else if (cmd == "page") {
 			if (argc < 3){
 				print_error("Please include the title for your page after the command.");
-				print_error("example : oc page 'A cool page title'");
+				print_error("Usage : oc page 'A cool page title'");
 				return 1;
 			}
 			else{
@@ -151,7 +170,7 @@ int main(int argc, char const *argv[]) {
 				string infile = opt.get_last_positional();
 				IO inout(infile);
 				if (inout.is_file_good()){
-					cout << inout.read_file() << flush;
+					cout << inout.read_file() << endl;
 				}
 			}
 			else{
@@ -222,6 +241,10 @@ int main(int argc, char const *argv[]) {
 			else{
 				print("The tests completed with no errors. All is well.");
 			}
+		}
+		else if (cmd == "test") {
+			string test = getPostHeader("This is a Test Post", currentDate(), currentTime());
+			cout << test << endl;
 		}
 		//otherwise if a second argument is present print error message that the second argument is not a known command or option
 		else {
@@ -295,7 +318,7 @@ inline void show_version(){
 /******************************************
 *  Current Date/Time
 *******************************************/
-inline const std::string currentDateTime() {
+inline string currentDateTime() {
     time_t     now = time(0);
     struct tm  tstruct;
     char       buf[80];
@@ -303,3 +326,51 @@ inline const std::string currentDateTime() {
     strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
     return buf;
 }
+
+/******************************************
+*  Current Date
+*******************************************/
+inline string currentDate() {
+	time_t     now = time(0);
+    struct tm  tstruct;
+    char       buf[80];
+    tstruct = *localtime(&now);
+    strftime(buf, sizeof(buf), "%Y-%m-%d", &tstruct);
+    return buf;
+}
+
+/******************************************
+*  Current Time
+*******************************************/
+inline string currentTime() {
+	time_t     now = time(0);
+    struct tm  tstruct;
+    char       buf[80];
+    tstruct = *localtime(&now);
+    strftime(buf, sizeof(buf), "%R", &tstruct);
+    return buf;
+}
+
+/******************************************
+*  Character replacements for strings
+*******************************************/
+// ch1 = char to replace ; ch2 = replacement char
+inline string replaceChar(string str, char ch1, char ch2) {
+  for (int i = 0; i < str.length(); ++i) {
+    if (str[i] == ch1)
+      str[i] = ch2;
+  }
+
+  return str;
+}
+
+/******************************************
+*  Octopress Post Header Generator
+*******************************************/
+// Generated Octopress post header
+inline string getPostHeader(string title, string postdate, string posttime) {
+	string posthead = "---\nlayout: post\ntitle: '" + title + "'\ndate: " + postdate + " " + posttime + "\ndescription: \nkeywords: \ncomments: true\ncategories: \npublished: true\n---";
+	return posthead;
+}
+
+

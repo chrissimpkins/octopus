@@ -8,6 +8,10 @@ inline void show_help();
 inline void show_usage();
 inline void show_version();
 inline std::vector<std::string> create_CL_vector(int argc, char const *arg[]);
-inline const std::string currentDateTime();
+inline std::string currentDateTime();
+inline std::string currentDate();
+inline std::string currentTime();
+inline std::string replaceChar(std::string s, char c1, char c2);
+inline std::string getPostHeader(std::string title, std::string postdate, std::string posttime);
 
 #endif
