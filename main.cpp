@@ -3,7 +3,7 @@
 */
 
 // Constant definitions
-#define VERSION string("0.1.6")
+#define VERSION string("0.1.8")
 #define APPLICATION string("Octopress Commander")
 #define COPYRIGHT string("Copyright 2013 Christopher Simpkins")
 #define LICENSE string("MIT License")
@@ -113,6 +113,17 @@ int main(int argc, char const *argv[]) {
 				return 0;
 			}
 		}
+		// GENERATE -----------------------------------------------------
+		else if (cmd == "generate") {
+			const char * gen_string = "bundle exec rake generate";
+			if (system(gen_string) != 0) {
+				print_error("Unable to generate your static HTML files.");
+				return 1;
+			}
+			else {
+				//do nothing Jekyll provides an appropriate flat file generation message for user
+			}
+		}
 		// PUBLISH ------------------------------------------------------
 		else if (cmd == "publish") {
 			Options opt = Options(argc, clvr);
@@ -147,23 +158,73 @@ int main(int argc, char const *argv[]) {
 				print_error("There was an error generating your html files. The files were not pushed to your server.");
 				return 1;
 			}
-			print("Pushing files to server...");
-			if (system(deploy_string) != 0){
-				print_error("There was an error pushing your files to the server.  They were not successfully deployed.");
-				return 1;
+			// flat file generation worked, deploy to server
+			else {
+				print("Pushing files to server...");
+				if (system(deploy_string) != 0){
+					print_error("There was an error pushing your files to the server.  They were not successfully deployed.");
+					return 1;
+				}
+				else{
+					print("The files were successfully pushed to your server.");
+					return 0;
+				}
 			}
-			print("The files were successfully pushed to your server.");
 		}
 		// PREVIEW ------------------------------------------------------
 		else if (cmd == "preview") {
-			const char * prev_string = "bundle exec rake preview";
-			print("Opening local server at http://localhost:4000.");
-			if (system(prev_string) != 0){
-				print_error("Unable to open the local server.");
-				return 1;
+			Options opt = Options(argc, clvr);
+			//user specifies that they want the Octopress generated server
+			if (opt.contains("--octo")){
+				const char * prev_string = "bundle exec rake preview";
+				print("Opening local server at http://localhost:4000.");
+				if (system(prev_string) != 0){
+					print_error("Unable to open the local server.");
+					return 1;
+				}
+				else{
+					print("Local server is running.");
+				}
 			}
 			else{
-				print("Local server is running.");
+				// Python 2.x
+				string prev_string_v2 = "python -m SimpleHTTPServer";
+				// Python 3.x
+				string prev_string_v3 = "python -m http.server";
+				string the_port = "8000";
+				string port_string;
+				if (argc > 2) {
+					//confirm that the last argument was not a switch, if not it is the port
+					if (opt.get_last_positional().substr(0,1) == "-"){
+						port_string = "8000";
+					}
+					else{
+						port_string = opt.get_last_positional();
+					}
+					prev_string_v2 = prev_string_v2 + " " + port_string;
+					prev_string_v3 = prev_string_v3 + " " + port_string;
+					the_port = port_string;
+				}
+				print("Opening server on port " + the_port);
+				//create C char arrays for use with the system cmd
+				const char* prev_string_2cstr = prev_string_v2.c_str();
+				const char* prev_string_3cstr = prev_string_v3.c_str();
+				if (opt.contains("--py3")){
+					//user specifies option for Python 3 as default version
+					if (system(prev_string_3cstr) != 0){
+						return 1;
+					}
+				}
+				else{
+					//try Python 2.x as default
+					if (system(prev_string_2cstr) != 0) {
+						//if it doesn't work, try Python 3.x command
+						if (system(prev_string_3cstr) != 0) {
+							return 1;
+						}
+						// defer notification of success to Python which notifies of server start
+					}
+				}
 			}
 		}
 		// READ ---------------------------------------------------------
