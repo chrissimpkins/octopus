@@ -3,7 +3,7 @@
 */
 
 // Constant definitions
-#define VERSION string("0.1.8")
+#define VERSION string("0.1.10")
 #define APPLICATION string("Octopress Commander")
 #define COPYRIGHT string("Copyright 2013 Christopher Simpkins")
 #define LICENSE string("MIT License")
@@ -122,6 +122,14 @@ int main(int argc, char const *argv[]) {
 			}
 			else {
 				//do nothing Jekyll provides an appropriate flat file generation message for user
+			}
+		}
+		// LIST --------------------------------------------------------
+		else if (cmd == "list") {
+			const char * list_string = "find ./source/_posts -name \\*.markdown";
+			if (system(list_string) != 0){
+				print_error("Unable to list the posts in your source directory.  Please confirm that you are in the main directory for your Octopress project.");
+				return 1;
 			}
 		}
 		// PUBLISH ------------------------------------------------------
