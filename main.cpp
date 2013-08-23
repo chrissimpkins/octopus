@@ -177,7 +177,7 @@ int main(int argc, char const *argv[]) {
 			//user specifies that they want the Octopress generated server
 			if (opt.contains("--octo")){
 				const char * prev_string = "bundle exec rake preview";
-				print("Opening local server at http://localhost:4000.");
+				print("Opening local server on port 4000.");
 				if (system(prev_string) != 0){
 					print_error("Unable to open the local server.");
 					return 1;
@@ -263,7 +263,7 @@ int main(int argc, char const *argv[]) {
 			}
 			else{
 				fail = 1;
-				print("> Error: Git is not installed.\n");
+				print("> Git is not installed.\n");
 			}
 			if (system("which ruby") == 0) {
 				print("> Ruby is installed. Please confirm that it is version 1.9.3 in the line below:\n");
@@ -272,7 +272,7 @@ int main(int argc, char const *argv[]) {
 			}
 			else{
 				fail = 1;
-				print("> Error: Ruby is not installed.\n");
+				print("> Ruby is not installed.\n");
 			}
 			// Rake test
 			if (system("which rake") == 0){
@@ -280,7 +280,7 @@ int main(int argc, char const *argv[]) {
 			}
 			else{
 				fail = 1;
-				print("> Error: Rake is not installed.\n");
+				print("> Rake is not installed.\n");
 			}
 			// Bundle test
 			if (system("which bundle") == 0) {
@@ -288,7 +288,7 @@ int main(int argc, char const *argv[]) {
 			}
 			else {
 				fail = 1;
-				print("> Error: Bundle is not installed.\n");
+				print("> Bundle is not installed.\n");
 			}
 			//rsync test
 			if (system("which rsync") == 0) {
@@ -298,12 +298,23 @@ int main(int argc, char const *argv[]) {
 				fail = 1;
 				print("> rsync is not installed.  This is only relevant if you use it to deploy your site.\n");
 			}
-			print("...Completed Octopress Commander tests");
+			// Python tests
+			if (system("which python") == 0){
+				print("> Python is installed.");
+			}
+			else if (system("which python3") == 0) {
+				print("> Python 3 is installed.");
+			}
+			else {
+				fail = 1;
+				print("> Python is not installed.");
+			}
+			print("\n...Completed Octopress Commander tests");
 			if (fail == 1){
-				print("There were errors detected during these tests.  Please scan the log above.");
+				print("\nThere were errors detected during these tests.  Please scan the log above.");
 			}
 			else{
-				print("The tests completed with no errors. All is well.");
+				print("\nThe tests completed with no errors. All is well.");
 			}
 		}
 		else if (cmd == "test") {
