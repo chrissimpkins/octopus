@@ -3,7 +3,7 @@
 */
 
 // Constant definitions
-#define VERSION string("0.1.10")
+#define VERSION string("0.1.12")
 #define APPLICATION string("Octopress Commander")
 #define COPYRIGHT string("Copyright 2013 Christopher Simpkins")
 #define LICENSE string("MIT License")
@@ -126,10 +126,53 @@ int main(int argc, char const *argv[]) {
 		}
 		// LIST --------------------------------------------------------
 		else if (cmd == "list") {
+			// first attempt from main directory
 			const char * list_string = "find ./source/_posts -name \\*.markdown";
+			// then attempt from source directory
+			const char * list_string2 = "find ./_posts -name \\*.markdown";
 			if (system(list_string) != 0){
-				print_error("Unable to list the posts in your source directory.  Please confirm that you are in the main directory for your Octopress project.");
-				return 1;
+				print("Unable to locate your files in the path ./source/_posts, attempting path ./_posts\n");
+				if (system(list_string2) != 0){
+					print_error("Unable to list the posts in your source directory.  Please confirm that you are in the main directory for your Octopress project.");
+					return 1;
+				}
+			}
+		}
+		// FIND (file name) ---------------------------------------------
+		else if (cmd == "find") {
+			if (argc < 3) {
+				print_error("Please include a file name substring with the find command.");
+				print_error("Usage: oc find <file name substring>");
+			}
+			else {
+				// generate case insensitive filename substring search string
+				string find_string = "find ./source/_posts -iname *";
+				Options opt(argc, clvr);
+				string query_string = opt.get_last_positional();
+				find_string += query_string;
+				find_string += "*";
+				const char * find_string_cstr = find_string.c_str();
+				if (system(find_string_cstr) != 0) {
+					print_error("Unable to locate a filename that includes the string that you entered.");
+					return 1;
+				}
+			}
+		}
+		// EDIT ---------------------------------------------------------
+		else if (cmd == "edit") {
+			if (argc < 3) {
+				print_error("Please include a file name substring with the edit command.");
+				print_error("Usage: oc edit <file name substring>");
+			}
+			else {
+				// Requires user to set $OCEDITOR bash variable to appropriate editor in .bashrc / .bash_profile
+				string edit_string = "$OCEDITOR $(find ./source/_posts -iname *";
+				Options opt(argc, clvr);
+				string query_string = opt.get_last_positional();
+				edit_string += query_string;
+				edit_string += "*)";
+				const char * edit_string_cstr = edit_string.c_str();
+				system(edit_string_cstr);
 			}
 		}
 		// PUBLISH ------------------------------------------------------
@@ -254,9 +297,9 @@ int main(int argc, char const *argv[]) {
 		// WATCH --------------------------------------------------------
 		else if (cmd == "watch") {
 			const char * watch_string = "bundle exec rake watch";
-			print("Beginning to watch the source and SASS directories for changes.");
+			print("Beginning to watch the source and sass directories for changes.");
 			if (system(watch_string) != 0) {
-				print_error("Unable to watch the source and SASS directories.");
+				print_error("Unable to watch the source and sass directories.");
 				return 1;
 			}
 		}
@@ -271,7 +314,7 @@ int main(int argc, char const *argv[]) {
 			}
 			else{
 				fail = 1;
-				print("> Git is not installed.\n");
+				print("> FAIL: Git is not installed.\n");
 			}
 			if (system("which ruby") == 0) {
 				print("> Ruby is installed. Please confirm that it is version 1.9.3 in the line below:\n");
@@ -280,7 +323,7 @@ int main(int argc, char const *argv[]) {
 			}
 			else{
 				fail = 1;
-				print("> Ruby is not installed.\n");
+				print("> FAIL: Ruby is not installed.\n");
 			}
 			// Rake test
 			if (system("which rake") == 0){
@@ -288,7 +331,7 @@ int main(int argc, char const *argv[]) {
 			}
 			else{
 				fail = 1;
-				print("> Rake is not installed.\n");
+				print("> FAIL: Rake is not installed.\n");
 			}
 			// Bundle test
 			if (system("which bundle") == 0) {
@@ -296,7 +339,7 @@ int main(int argc, char const *argv[]) {
 			}
 			else {
 				fail = 1;
-				print("> Bundle is not installed.\n");
+				print("> FAIL: Bundle is not installed.\n");
 			}
 			//rsync test
 			if (system("which rsync") == 0) {
@@ -304,18 +347,26 @@ int main(int argc, char const *argv[]) {
 			}
 			else {
 				fail = 1;
-				print("> rsync is not installed.  This is only relevant if you use it to deploy your site.\n");
+				print("> FAIL: rsync is not installed.\n");
 			}
-			// Python tests
-			if (system("which python") == 0){
-				print("> Python is installed.");
-			}
-			else if (system("which python3") == 0) {
-				print("> Python 3 is installed.");
+			// find test
+			if (system("which find") == 0) {
+				print("> find is installed.\n");
 			}
 			else {
 				fail = 1;
-				print("> Python is not installed.");
+				print("> FAIL: find is not installed.\n");
+			}
+			// Python tests
+			if (system("which python") == 0){
+				print("> Python is installed.\n");
+			}
+			else if (system("which python3") == 0) {
+				print("> Python 3 is installed.\n");
+			}
+			else {
+				fail = 1;
+				print("> FAIL: Python is not installed.\n");
 			}
 			print("\n...Completed Octopress Commander tests");
 			if (fail == 1){
@@ -366,17 +417,20 @@ inline void show_help() {
 	print(" ");
 	// SYNTAX HELP
 	print("Usage:");
-	print("\toc <command> [-shortoption] [--longoption] <argument(s)>\n");
+	print("  oc <command> [-shortoption] [--longoption] <argument(s)>\n");
 	// HELP INFO
 	print("Available Commands:");
-	print("\thelp : view help documentation");
-	print("\tpage <page name>: create a new page and specify file name");
-	print("\tpost <post name>: create a new post and specify file name");
-	print("\tpreview : open local server to view your site");
-	print("\tpublish [--heroku] : publish your site");
-	print("\tread <post/page path>: read your post/page in terminal");
-	print("\twatch : watch the source and SASS directories for changes");
-	print("\tversion: view current version number");
+	print("  find  \t          find markdown file by filename substring");
+	print("  generate  \t          generate HTML files");
+	print("  help  \t          view help documentation");
+	print("  list  \t          list your post markdown files");
+	print("  page <page name> \t  create a new page and specify file name");
+	print("  post <post name> \t  create a new post and specify file name");
+	print("  preview  \t          open local server to view your site");
+	print("  publish             \t  publish your site");
+	print("  read <post/page path>   read your post/page in terminal");
+	print("  watch  \t          watch the source and SASS directories for changes");
+	print("  version  \t          view current version number");
 }
 
 /******************************************
