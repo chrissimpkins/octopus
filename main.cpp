@@ -3,7 +3,7 @@
 */
 
 // Constant definitions
-#define VERSION string("0.1.13")
+#define VERSION string("0.1.14")
 #define APPLICATION string("Octopress Commander")
 #define COPYRIGHT string("Copyright 2013 Christopher Simpkins")
 #define LICENSE string("MIT License")
@@ -17,6 +17,9 @@
 
 // C headers
 #include <sys/stat.h>
+#include <unistd.h>     // fork
+#include <sys/types.h>  // kill
+#include <signal.h>     // kill
 
 // OC Project headers
 #include "main.h"
@@ -127,7 +130,7 @@ int main(int argc, char const *argv[]) {
 				//do nothing Jekyll provides an appropriate flat file generation message for user
 			}
 		}
-		// LIST --------------------------------------------------------
+		// LIST (post files) ---------------------------------------------
 		else if (cmd == "list") {
 			// first attempt from main directory
 			const char * list_string = "find ./source/_posts -name \\*.markdown";
@@ -304,6 +307,56 @@ int main(int argc, char const *argv[]) {
 				return 1;
 			}
 		}
+		// WRITE ---------------------------------------------------------
+		else if (cmd == "write") {
+			if (argc < 3) {
+				print_error("Please include a file name substring with the write command.");
+				print_error("Usage: oc write <file name substring>");
+			}
+			else {
+				// EDIT
+				// Requires user to set $OCEDITOR bash variable to appropriate editor in .bashrc / .bash_profile
+				string edit_string = "$OCEDITOR $(find ./source/_posts -iname *";
+				Options opt(argc, clvr);
+				string query_string = opt.get_last_positional();
+				edit_string += query_string;
+				edit_string += "*)";
+				const char * edit_string_cstr = edit_string.c_str();
+				system(edit_string_cstr);
+
+				// fork a child process to run the WATCH and PREVIEW at the same time
+				pid_t childpid;
+				childpid = fork();
+				if (childpid >= 0){
+					//fork succeeded
+					if (childpid == 0) {
+						//child process
+						//cout << "Watching on process " << getpid() << endl;
+						system("oc watch");
+					}
+					else {
+						//parent process
+						if (system("oc preview") == 0){
+							// kill the child process when user sends SIGTERM
+							kill(childpid, SIGTERM);
+							//cout << "Killing process " << childpid << endl;
+							cout << "Source watch was discontinued." << endl;
+							cout << "Local server was shut down." << endl;
+							return 0;
+						}
+						else {
+							kill(childpid, SIGTERM);
+							cout << "Failed to open your local server.  The source watch was discontinued." << endl;
+							return 1;
+						}
+					}
+				}
+				else {
+					cout << "Unable to run the write command." << endl;
+					return 1;
+				}
+			}
+		}
 		// DOCTOR --------------------------------------------------------
 		else if (cmd == "doctor") {
 			int fail = 0;
@@ -379,15 +432,6 @@ int main(int argc, char const *argv[]) {
 		}
 		else if (cmd == "test") {
 			// used for testing purposes.
-			struct stat sb;
-			const char * pathname = ".git";
-			if (stat(pathname, &sb) == 0 && S_ISDIR(sb.st_mode))
-			{
-			    cout << "Git detected" << endl;
-			}
-			else {
-				cout << "NOPE!" << endl;
-			}
 		}
 		//otherwise if a second argument is present print error message that the second argument is not a known command or option
 		else {
