@@ -3,19 +3,22 @@
 */
 
 // Constant definitions
-#define VERSION string("0.1.12")
+#define VERSION string("0.1.13")
 #define APPLICATION string("Octopress Commander")
 #define COPYRIGHT string("Copyright 2013 Christopher Simpkins")
 #define LICENSE string("MIT License")
 
-// Standard library headers
+// C++ Standard library headers
 #include <iostream>
 #include <string>
 #include <cstdlib>
 #include <vector>
 #include <algorithm>
 
-// Project headers
+// C headers
+#include <sys/stat.h>
+
+// OC Project headers
 #include "main.h"
 #include "opts.h"
 #include "print.h"
@@ -238,44 +241,42 @@ int main(int argc, char const *argv[]) {
 				}
 			}
 			else{
-				// Python 2.x
-				string prev_string_v2 = "python -m SimpleHTTPServer";
-				// Python 3.x
-				string prev_string_v3 = "python -m http.server";
+				// Ruby Server
+				string prev_string = "ruby -run -e httpd";
 				string the_port = "8000";
+				string server_path = " . ";
 				string port_string;
 				if (argc > 2) {
-					//confirm that the last argument was not a switch, if not it is the port
+					//confirm that the last argument was not a switch, if not it is assumed to be the port
 					if (opt.get_last_positional().substr(0,1) == "-"){
-						port_string = "8000";
+						//default to port 8000
+						port_string = the_port;
 					}
 					else{
-						port_string = opt.get_last_positional();
+						// unless user specifies the port in the command
+						the_port = opt.get_last_positional();
 					}
-					prev_string_v2 = prev_string_v2 + " " + port_string;
-					prev_string_v3 = prev_string_v3 + " " + port_string;
-					the_port = port_string;
+				}
+				// check for the public directory and open server in it if present, if not check for _deploy directory
+				struct stat sb;
+				const char * pathname_public = "public";
+				const char * pathname_deploy = "_deploy";
+				if (stat(pathname_public, &sb) == 0 && S_ISDIR(sb.st_mode))
+				{
+					server_path = " public ";
+				}
+				else if (stat(pathname_deploy, &sb) == 0 && S_ISDIR(sb.st_mode)) {
+					server_path = " _deploy ";
 				}
 				print("Opening server on port " + the_port);
-				//create C char arrays for use with the system cmd
-				const char* prev_string_2cstr = prev_string_v2.c_str();
-				const char* prev_string_3cstr = prev_string_v3.c_str();
-				if (opt.contains("--py3")){
-					//user specifies option for Python 3 as default version
-					if (system(prev_string_3cstr) != 0){
-						return 1;
-					}
-				}
-				else{
-					//try Python 2.x as default
-					if (system(prev_string_2cstr) != 0) {
-						//if it doesn't work, try Python 3.x command
-						if (system(prev_string_3cstr) != 0) {
-							return 1;
-						}
-						// defer notification of success to Python which notifies of server start
-					}
-				}
+				port_string = "-p " + the_port;
+				//create the Ruby local server command
+				prev_string = prev_string + server_path + port_string;
+				//create C string for use with the system cmd
+				const char* prev_string_cstr = prev_string.c_str();
+				//start the server
+				system(prev_string_cstr);
+
 			}
 		}
 		// READ ---------------------------------------------------------
@@ -378,6 +379,15 @@ int main(int argc, char const *argv[]) {
 		}
 		else if (cmd == "test") {
 			// used for testing purposes.
+			struct stat sb;
+			const char * pathname = ".git";
+			if (stat(pathname, &sb) == 0 && S_ISDIR(sb.st_mode))
+			{
+			    cout << "Git detected" << endl;
+			}
+			else {
+				cout << "NOPE!" << endl;
+			}
 		}
 		//otherwise if a second argument is present print error message that the second argument is not a known command or option
 		else {
