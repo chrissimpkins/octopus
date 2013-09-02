@@ -3,7 +3,7 @@
 */
 
 // Constant definitions
-#define VERSION string("0.1.14")
+#define VERSION string("0.1.16")
 #define APPLICATION string("Octopress Commander")
 #define COPYRIGHT string("Copyright 2013 Christopher Simpkins")
 #define LICENSE string("MIT License")
@@ -16,7 +16,7 @@
 #include <algorithm>
 
 // C headers
-#include <sys/stat.h>
+#include <sys/stat.h>	// local directory check functions
 #include <unistd.h>     // fork
 #include <sys/types.h>  // kill
 #include <signal.h>     // kill
@@ -62,7 +62,7 @@ int main(int argc, char const *argv[]) {
 		else if (cmd == "version" || cmd == "-v" || cmd == "--version") {
 			show_version();
 		}
-		// NEW POST -----------------------------------------------------
+		// POST ---------------------------------------------------------
 		else if (cmd == "post") {
 			if (argc < 3){
 				print_error("Please include the title for your post after the command.");
@@ -100,7 +100,7 @@ int main(int argc, char const *argv[]) {
 				}
 			}
 		}
-		// NEW PAGE -----------------------------------------------------
+		// PAGE --------------------------------------------------------
 		else if (cmd == "page") {
 			if (argc < 3){
 				print_error("Please include the title for your page after the command.");
@@ -132,16 +132,22 @@ int main(int argc, char const *argv[]) {
 		}
 		// LIST (post files) ---------------------------------------------
 		else if (cmd == "list") {
-			// first attempt from main directory
-			const char * list_string = "find ./source/_posts -name \\*.markdown";
-			// then attempt from source directory
-			const char * list_string2 = "find ./_posts -name \\*.markdown";
-			if (system(list_string) != 0){
-				print("Unable to locate your files in the path ./source/_posts, attempting path ./_posts\n");
-				if (system(list_string2) != 0){
-					print_error("Unable to list the posts in your source directory.  Please confirm that you are in the main directory for your Octopress project.");
-					return 1;
-				}
+			string dir1 = "./source/_posts";
+			string dir2 = "./_posts";
+			if (isDirPresent(dir1)) {
+				// first attempt from main directory
+				const char * list_string = "find ./source/_posts -name \\*.markdown | less";
+				system(list_string);
+			}
+			else if (isDirPresent(dir2)) {
+				// then attempt from source directory
+				const char * list_string = "find ./_posts -name \\*.markdown | less";
+				system(list_string);
+			}
+			else {
+				// assume that user is in the _posts directory and run find there
+				const char * list_string = "find . -name \\*.markdown | less";
+				system(list_string);
 			}
 		}
 		// FIND (file name) ---------------------------------------------
@@ -151,12 +157,32 @@ int main(int argc, char const *argv[]) {
 				print_error("Usage: oc find <file name substring>");
 			}
 			else {
-				// generate case insensitive filename substring search string
-				string find_string = "find ./source/_posts -iname *";
+				string dir1 = "./source/_posts";
+				string dir2 = "./_posts";
+				string dir3 = "../source/_posts";
+				string dir4 = "../_posts";
+				string find_string = "";
+				// generate case insensitive search string based upon working directory
+				if (isDirPresent(dir1)) {
+					find_string = "find ./source/_posts -iname *";
+				}
+				else if (isDirPresent(dir2)) {
+					find_string = "find ./_posts -iname *";
+				}
+				else if (isDirPresent(dir3)) {
+					find_string = "find ../source/_posts -iname *";
+				}
+				else if (isDirPresent(dir4)) {
+					find_string = "find ../_posts -iname *";
+				}
+				else {
+					find_string = "find . -iname *";
+				}
+
 				Options opt(argc, clvr);
 				string query_string = opt.get_last_positional();
-				find_string += query_string;
-				find_string += "*";
+				find_string += query_string;  //add the query
+				find_string += "*";           //add last wildcard
 				const char * find_string_cstr = find_string.c_str();
 				if (system(find_string_cstr) != 0) {
 					print_error("Unable to locate a filename that includes the string that you entered.");
@@ -246,8 +272,8 @@ int main(int argc, char const *argv[]) {
 			else{
 				// Ruby Server
 				string prev_string = "ruby -run -e httpd";
-				string the_port = "8000";
-				string server_path = " . ";
+				string the_port = "8000";   // default to port 8000
+				string server_path = " . "; //default to run in the current working directory
 				string port_string;
 				if (argc > 2) {
 					//confirm that the last argument was not a switch, if not it is assumed to be the port
@@ -275,7 +301,6 @@ int main(int argc, char const *argv[]) {
 				port_string = "-p " + the_port;
 				//create the Ruby local server command
 				prev_string = prev_string + server_path + port_string;
-				//create C string for use with the system cmd
 				const char* prev_string_cstr = prev_string.c_str();
 				//start the server
 				system(prev_string_cstr);
@@ -431,7 +456,15 @@ int main(int argc, char const *argv[]) {
 			}
 		}
 		else if (cmd == "test") {
-			// used for testing purposes.
+			string dir = clv.at(2);
+			cout << dir << endl;
+			int i = isDirPresent(dir);
+			if (i){
+				cout << "Yep" << endl;
+			}
+			else{
+				cout << "nope" << endl;
+			}
 		}
 		//otherwise if a second argument is present print error message that the second argument is not a known command or option
 		else {
@@ -547,7 +580,7 @@ inline string currentTime() {
 *******************************************/
 // ch1 = char to replace ; ch2 = replacement char
 inline string replaceChar(string str, char ch1, char ch2) {
-  for (int i = 0; i < str.length(); ++i) {
+  for (size_t i = 0; i < str.size(); ++i) {
     if (str[i] == ch1)
       str[i] = ch2;
   }
@@ -563,4 +596,22 @@ inline string getPostHeader(string title, string postdate, string posttime) {
 	return posthead;
 }
 
+/******************************************
+*  Check for Presence of a Directory
+*******************************************/
+inline int isDirPresent(string& dir) {
+	const char * pathname = dir.c_str();
+	struct stat sb;
+	if (stat(pathname, &sb) == 0 && S_ISDIR(sb.st_mode))
+	{
+		//directory present, return 1
+	    return 1;
+	}
+	else {
+		//directory not present, return 0
+		return 0;
+	}
+}
+
+// create pathToPosts() function - return string with the filepath to the posts directory
 
