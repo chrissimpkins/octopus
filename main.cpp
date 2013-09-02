@@ -3,7 +3,7 @@
 */
 
 // Constant definitions
-#define VERSION string("0.2.1")
+#define VERSION string("0.2.2")
 #define APPLICATION string("Octopus | The Octopress Commander")
 #define COPYRIGHT string("Copyright 2013 Christopher Simpkins")
 #define LICENSE string("MIT License")
@@ -154,28 +154,12 @@ int main(int argc, char const *argv[]) {
 				print_error("Usage: oc find <file name substring>");
 			}
 			else {
-				string dir1 = "./source/_posts";
-				string dir2 = "./_posts";
-				string dir3 = "../source/_posts";
-				string dir4 = "../_posts";
-				string find_string = "";
-				// generate case insensitive search string based upon working directory
-				if (isDirPresent(dir1)) {
-					find_string = "find ./source/_posts -iname *";
-				}
-				else if (isDirPresent(dir2)) {
-					find_string = "find ./_posts -iname *";
-				}
-				else if (isDirPresent(dir3)) {
-					find_string = "find ../source/_posts -iname *";
-				}
-				else if (isDirPresent(dir4)) {
-					find_string = "find ../_posts -iname *";
-				}
-				else {
-					find_string = "find . -iname *";
-				}
-
+				string path_to_posts_dir = "";
+				string& pttp_r = path_to_posts_dir;
+				// get the path to the _posts directory, assign to pttp_r
+				pathToPosts(pttp_r);
+				// create the proper post filename with the path obtained above
+				string find_string = "find " + pttp_r + " -iname *";
 				Options opt(argc, clvr);
 				string query_string = opt.get_last_positional();
 				find_string += query_string;  //add the query
