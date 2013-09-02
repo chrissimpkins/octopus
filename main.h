@@ -14,6 +14,6 @@ inline std::string currentTime();
 inline std::string replaceChar(std::string s, char c1, char c2);
 inline std::string getPostHeader(std::string title, std::string postdate, std::string posttime);
 inline int isDirPresent(std::string& dir);
-inline string pathToPosts();
+inline void pathToPosts(std::string& path);
 
 #endif
