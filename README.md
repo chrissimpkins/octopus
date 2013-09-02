@@ -1,24 +1,11 @@
-Octopress Commander (oc)
+Octopus (oc) | The Octopress Commander
 ===================
 
-## Octopress Site Management, Empowered.
-OC is designed to be a jetpack for your Octopress site. With a powerful set of commands that provide an array of site management features, you should be able to focus on your content... instead of on shell commands.
+## Octopress Site Management, Simplified.
+Octopus is a jetpack for your Octopress site. With a powerful set of commands that provide an array of site management features, you should be able to focus on your content... instead of on shell commands.
 
-## Example Workflow
-### Create a New Post Markdown File 
-##### (including) description + keyword + draft post YAML tags)
-```
-oc post "A really cool new post"
-```
+## Status
+Octopus is stable and in open testing (including my own site [Sweetmeat](http://sweetme.at)). [Documentation](http://chrissimpkins.github.io/octopus) is in development.
 
-### Edit the Post + Watch Source for Changes + Launch Local Web Server
-##### (with fuzzy search post launcher)
-```
-oc write "cool post"
-```
-
-### Publish the Post & git commit Your Source
-##### (to GitHub Pages, Heroku, or Your Server of Choice with rsync)
-```
-oc publish
-```
+## Documentation
+[Octopus documentation](http://chrissimpkins.github.io/octopus)
