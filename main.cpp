@@ -3,8 +3,8 @@
 */
 
 // Constant definitions
-#define VERSION string("0.1.16")
-#define APPLICATION string("Octopress Commander")
+#define VERSION string("0.2.0")
+#define APPLICATION string("Octopus | The Octopress Commander")
 #define COPYRIGHT string("Copyright 2013 Christopher Simpkins")
 #define LICENSE string("MIT License")
 
@@ -55,7 +55,7 @@ int main(int argc, char const *argv[]) {
 		// create a string for the main user entered command at vector position 1
 		const string cmd = clv.at(1);
 		// HELP ---------------------------------------------------------
-		if (cmd == "help" || cmd == "-h" | cmd == "--help"){
+		if (cmd == "help" || cmd == "-h" || cmd == "--help"){
 			show_help();
 		}
 		// VERSION ------------------------------------------------------
@@ -385,7 +385,7 @@ int main(int argc, char const *argv[]) {
 		// DOCTOR --------------------------------------------------------
 		else if (cmd == "doctor") {
 			int fail = 0;
-			print("Beginning Octopress Commander tests...");
+			print("Beginning Octopus tests...");
 			print(" ");
 			// Git test
 			if (system("which git") == 0){
@@ -447,7 +447,7 @@ int main(int argc, char const *argv[]) {
 				fail = 1;
 				print("> FAIL: Python is not installed.\n");
 			}
-			print("\n...Completed Octopress Commander tests");
+			print("\n...Completed Octopus tests");
 			if (fail == 1){
 				print("\nThere were errors detected during these tests.  Please scan the log above.");
 			}
