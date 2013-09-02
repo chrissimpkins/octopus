@@ -307,22 +307,6 @@ int main(int argc, char const *argv[]) {
 
 			}
 		}
-		// READ ---------------------------------------------------------
-		else if (cmd == "read"){
-			if (argc == 3){
-				Options opt(argc, clvr);
-				string infile = opt.get_last_positional();
-				IO inout(infile);
-				if (inout.is_file_good()){
-					cout << inout.read_file() << endl;
-				}
-			}
-			else{
-				print_error("Missing the input file path.");
-				print_error("Usage:");
-				print_error("\toc read <filepath>");
-			}
-		}
 		// WATCH --------------------------------------------------------
 		else if (cmd == "watch") {
 			const char * watch_string = "bundle exec rake watch";
@@ -613,5 +597,10 @@ inline int isDirPresent(string& dir) {
 	}
 }
 
-// create pathToPosts() function - return string with the filepath to the posts directory
+/************************************************************
+*  Return path to the user's _posts directory based upon pwd
+*************************************************************/
+inline string pathToPosts() {
+
+}
 
