@@ -3,7 +3,7 @@
 */
 
 // Constant definitions
-#define VERSION string("0.2.0")
+#define VERSION string("0.2.1")
 #define APPLICATION string("Octopus | The Octopress Commander")
 #define COPYRIGHT string("Copyright 2013 Christopher Simpkins")
 #define LICENSE string("MIT License")
@@ -89,7 +89,12 @@ int main(int argc, char const *argv[]) {
 					string post_title = replaceChar(long_title, ' ', '-');
 					std::transform(post_title.begin(), post_title.end(), post_title.begin(), ::tolower);
 					string post_title_md = post_title + ".markdown";
-					string post_path = "source/_posts/" + post_title_md;
+					string path_to_posts_dir = "";
+					string& pttp_r = path_to_posts_dir;
+					// get the path to the _posts directory, assign to pttp_r
+					pathToPosts(pttp_r);
+					// create the proper post filename with the path obtained above
+					string post_path = pttp_r + "/" + post_title_md;
 					string post_head_string = getPostHeader(title, currentDate(), currentTime());
 					//write to file
 					IO newpost(post_path);
@@ -132,23 +137,15 @@ int main(int argc, char const *argv[]) {
 		}
 		// LIST (post files) ---------------------------------------------
 		else if (cmd == "list") {
-			string dir1 = "./source/_posts";
-			string dir2 = "./_posts";
-			if (isDirPresent(dir1)) {
-				// first attempt from main directory
-				const char * list_string = "find ./source/_posts -name \\*.markdown | less";
-				system(list_string);
-			}
-			else if (isDirPresent(dir2)) {
-				// then attempt from source directory
-				const char * list_string = "find ./_posts -name \\*.markdown | less";
-				system(list_string);
-			}
-			else {
-				// assume that user is in the _posts directory and run find there
-				const char * list_string = "find . -name \\*.markdown | less";
-				system(list_string);
-			}
+			string path_to_post_dir = "";
+			string& pttp_r = path_to_post_dir;
+			// get the path to the _posts directory from the pwd
+			pathToPosts(pttp_r);
+			string find_string = "find " + pttp_r + " -name \\*.markdown | less";
+			const char * fstr_cstr = find_string.c_str();
+			// run the command
+			system(fstr_cstr);
+			return 0;
 		}
 		// FIND (file name) ---------------------------------------------
 		else if (cmd == "find") {
@@ -379,6 +376,7 @@ int main(int argc, char const *argv[]) {
 				fail = 1;
 				print("> FAIL: Git is not installed.\n");
 			}
+			// Ruby test
 			if (system("which ruby") == 0) {
 				print("> Ruby is installed. Please confirm that it is version 1.9.3 in the line below:\n");
 				system("ruby --version");
@@ -440,15 +438,10 @@ int main(int argc, char const *argv[]) {
 			}
 		}
 		else if (cmd == "test") {
-			string dir = clv.at(2);
-			cout << dir << endl;
-			int i = isDirPresent(dir);
-			if (i){
-				cout << "Yep" << endl;
-			}
-			else{
-				cout << "nope" << endl;
-			}
+			string path = "";
+			string& path_r = path;
+			pathToPosts(path_r);
+			print(path_r);
 		}
 		//otherwise if a second argument is present print error message that the second argument is not a known command or option
 		else {
@@ -598,9 +591,45 @@ inline int isDirPresent(string& dir) {
 }
 
 /************************************************************
-*  Return path to the user's _posts directory based upon pwd
+*  Return path to the user's _posts directory based upon pwd (max depth = 5 levels)
 *************************************************************/
-inline string pathToPosts() {
-
+inline void pathToPosts(string& path_to_posts) {
+	string dir1 = "./source/_posts";
+	string dir2 = "./_posts";
+	string dir3 = "../source/_posts";
+	string dir4 = "../_posts";
+	string dir5 = "../../source/_posts";
+	string dir6 = "../../../source/_posts";
+	string dir7 = "../../../../source/_posts";
+	string dir8 = "../../../../../source/_posts";
+	// test for the correct path to the _posts directory from the pwd
+	if (isDirPresent(dir1)) {
+		path_to_posts = "./source/_posts";
+	}
+	else if (isDirPresent(dir2)) {
+		path_to_posts = "./_posts";
+	}
+	else if (isDirPresent(dir3)) {
+		path_to_posts = "../source/_posts";
+	}
+	else if (isDirPresent(dir4)) {
+		path_to_posts = "../_posts";
+	}
+	else if (isDirPresent(dir5)) {
+		path_to_posts = "../../source/_posts";
+	}
+	else if (isDirPresent(dir6)) {
+		path_to_posts = "../../../source/_posts";
+	}
+	else if (isDirPresent(dir7)) {
+		path_to_posts = "../../../../source/_posts";
+	}
+	else if (isDirPresent(dir8)) {
+		path_to_posts = "../../../../../source/_posts";
+	}
+	else {
+		// assume user in the _posts directory if other tests do not match (otherwise they are outside of their Octopress site directory altogether)
+		path_to_posts = ".";
+	}
 }
 
