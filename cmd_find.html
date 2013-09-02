@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" media="all" href="css/main.css">
+	<link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+	<link href='http://fonts.googleapis.com/css?family=Merriweather:400,700,700italic,400italic' rel='stylesheet' type='text/css'>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+
+<title>find Command Documentation | Octopus</title>
+<meta name="description" content="Documentation for the Octopus find command.  This command locates files by filename substring search.">
+<meta name="keywords" content="octopus, octopress, octopress commander, find, find command, command, documentation, how to use, docs">
+
+<!--[if lt IE 9]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+
+<body style="zoom: 1;">
+	<article id="content">
+		<header>
+			<a id="logo" href="index.html">OC</a>
+		</header>
+		<section id="post">
+
+			<h1 class="section_separator">
+				octopus | the octopress commander
+			</h1>
+			<hr>
+			<article class="post">
+
+<h1>find</h1>
+<p>The find command performs a search for a post markdown file by filename substring.</p>
+<p>You can use this command from any directory level in your Octopress directory.  The command allows you to identify a post or posts by any unique substring in the Markdown filename, including by date since this is included in every post filename.</p>
+<h2></h2>
+<h1>Usage</h1>
+<pre><code><span class="lavender">oc find</span> &lt;post filename substring&gt;</code></pre>
+<h1>Arguments</h1>
+<table border="1">
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>post filename substring</td>
+<td>a substring in the Markdown filename</td>
+</tr>
+</table>
+<h1>Options</h1>
+<p class="centertext">None</p>
+<h1>Examples</h1>
+<h3>By Day <sup><a href="#uniquedate" class="nounderline"><i class="icon-info-sign"></i></a></sup></h3>
+<pre><code><span class="lavender">oc find</span> "2013-08-31"</code></pre>
+<h3>By Month <sup><a href="#uniquedate" class="nounderline"><i class="icon-info-sign"></i></a></sup></h3>
+<pre><code><span class="lavender">oc find</span> "2013-08"</code></pre>
+<h3>By Year <sup><a href="#uniquedate" class="nounderline"><i class="icon-info-sign"></i></a></sup></h3>
+<pre><code><span class="lavender">oc find</span> "2013"</code></pre>
+<h3>By Unique Word in the Title <sup><a href="#uniqueword" class="nounderline"><i class="icon-info-sign"></i></a></sup></h3>
+<pre><code><span class="lavender">oc find</span> zombie</code></pre>
+<h3>By Unique Substring in the Title <sup><a href="#uniquess" class="nounderline"><i class="icon-info-sign"></i></a></sup></h3>
+<pre><code><span class="lavender">oc find</span> "star-wars"</code></pre>
+
+<h1>Additional Information</h1>
+<h2 id="uniquedate">Unique Dates</h2>
+<p>You can select one or more posts by date of publication with a unique date string because each Markdown file is timestamped with the date that the post was generated in its filename.  Use one of the formats shown above to find one or more posts on a specific day, or during your specified combination of day, month, and year.</p>
+<h2 id="uniqueword">Unique Words</h2>
+<p>You can select one or more posts with a unique word in the post Markdown filename.  The find command performs a case <em>insensitive</em> search for the word that you submit.</p>
+<h2 id="uniquess">Unique Substrings</h2>
+<p>You can select one or more posts with a unique substring in the post Markdown filename. Please familiarize yourself with the filename format for your post Markdown files.  They include a date followed by the post title followed by the .markdown file suffix.  The date strings and each word in the post name is separated by a dash '-' and the dash should be included in any multi-word (or date string) query that you submit.  Here are a couple of examples:</p>
+<pre><code><span class="lavender">oc find</span> "multi-word-post-search"</code></pre>
+<pre><code><span class="lavender">oc find</span> "2013-08"</code></pre>
+<h1>Advanced Features</h1>
+<h2>Use find with Other Applications</h2>
+<p>You can use your shell's command expansion feature to pass the result of the oc find command to any other application.  The generic command syntax looks like this:</p>
+<pre><code>&lt;shell command&gt; $(oc find &lt;search string&gt;)</code></pre>
+<p>The result of the oc find command is used as the filename (or filenames if the search string is included in multiple posts) argument for the shell command.</p>
+<p>Here is an example of how you gzip all posts that were generated on August 18th with the gzip application:</p>
+<pre><code>gzip $(oc find 08-18)</code></pre>
+
+			</article><!-- end of .post -->
+		</section><!-- end of #post -->
+
+		<footer>
+			<h1 class="section_separator"><span></span></h1>
+
+			<nav><a href="index.html">Home</a>&nbsp;|&nbsp;<a href="index.html#commandlist">Commands</a>&nbsp;|&nbsp;<a href="https://github.com/chrissimpkins/octopus">Source</a></nav>
+			<p class="centertext"><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">CC-SA 3.0</a></p>
+		</footer>
+
+	</article><!-- end of #content -->
+  </body>
+</html>

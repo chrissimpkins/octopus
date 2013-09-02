@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" media="all" href="css/main.css">
+	<link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+	<link href='http://fonts.googleapis.com/css?family=Merriweather:400,700,700italic,400italic' rel='stylesheet' type='text/css'>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+
+<title>post Command Documentation | Octopus</title>
+<meta name="description" content="Documentation for the Octopus post command.  This command creates new site posts.">
+<meta name="keywords" content="octopus, octopress, octopress commander, command, documentation, post, how to use, docs">
+
+<!--[if lt IE 9]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+
+<body style="zoom: 1;">
+
+	<article id="content">
+		<header>
+			<a id="logo" href="index.html">OC</a>
+		</header>
+		<section id="post">
+
+			<h1 class="section_separator">
+				octopus | the octopress commander
+			</h1>
+			<hr>
+			<article class="post">
+
+<h1>post</h1>
+<p>The post command generates a new post Markdown file in the source/_posts directory of your Octopress site.  You specify the name of your post as the argument for this command.</p>
+<p>This command automatically adds SEO meta fields (<em>description</em> & <em>keywords</em>) and a field to that allows you to indicate that the post is a draft (<em>published</em>) to the default Octopress post YAML frontmatter.  Octopus automatically includes the date that the Markdown file is created in the Markdown filename string.  This date is carried forward to the final static HTML file name when you use the <a href="cmd_generate.html">generate</a> <sup><i class="icon-rocket"></i></sup> or <a href="cmd_publish.html">publish</a> <sup><i class="icon-rocket"></i></sup> commands.</p>
+<h2></h2>
+<h1>Usage</h1>
+<pre><code><span class="lavender">oc post</span> &lt;post name&gt;</code></pre>
+<h1>Arguments</h1>
+<table border="1">
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>post name</td>
+<td>the title of your post</td>
+</tr>
+</table>
+<h1>Options</h1>
+<table border="1">
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>--octo</td>
+<td>use the default Octopress/Jekyll post generator</td>
+</tr>
+</table>
+<h1>Examples</h1>
+<h2>Default Octopus Post Generator</h2>
+<p>To create the Markdown filename <em>[DATE]-this-is-my-post-title.markdown</em> which will generate the HTML post <em>[DATE]-this-is-my-post-title.html</em> on your site, use the following command:</p>
+<pre><code><span class="lavender">oc post</span> "This is My Post Title"</code></pre>
+<p>The Markdown file creation date is automatically added to the post filename string. This date is also used in the filename string for the static HTML file that is generated from your Markdown.</p>
+<p>The character cases that you use in the post name argument are carried forward to the <em>title</em> YAML frontmatter in your Markdown file.  This will be the &lt;title&gt; tag in your deployed static HTML file.  Octopus automatically converts all characters to lower case and replaces spaces with dashes for the Markdown filename.</p>
+<p>Note this filename format if you use the <a href="cmd_find.html">find</a> <sup><i class="icon-rocket"></i></sup> command or any of the commands that allow you to work with files by Markdown filename substring.</p>
+<h2>Octopress Generator</h2>
+<p>If you would prefer to use the default Octopress new post generator, use the <em>--octo</em> switch with this syntax:</p>
+<pre><code><span class="lavender">oc post --octo</span> "This is My Post Title"</code></pre>
+<p>This switch eliminates the additional YAML frontmatter information that OC adds to your post.  Your new post Markdown is generated as if you entered the following Octopress/Jekyll command:</p>
+<pre><code>rake new_post["This is My Post Title"]</code></pre>
+			</article><!-- end of .post -->
+		</section><!-- end of #post -->
+
+		<footer>
+			<h1 class="section_separator"><span></span></h1>
+
+			<nav><a href="index.html">Home</a>&nbsp;|&nbsp;<a href="index.html#commandlist">Commands</a>&nbsp;|&nbsp;<a href="https://github.com/chrissimpkins/octopus">Source</a></nav>
+			<p class="centertext"><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">CC-SA 3.0</a></p>
+		</footer>
+
+	</article><!-- end of #content -->
+  </body>
+</html>
