@@ -1,4 +1,4 @@
-Octopus (oc) | The Octopress Commander
+Octopus (oc)
 ===================
 
 ## Octopress Site Management, Simplified.
