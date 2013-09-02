@@ -3,7 +3,7 @@
 */
 
 // Constant definitions
-#define VERSION string("0.2.2")
+#define VERSION string("0.2.3")
 #define APPLICATION string("Octopus | The Octopress Commander")
 #define COPYRIGHT string("Copyright 2013 Christopher Simpkins")
 #define LICENSE string("MIT License")
@@ -178,8 +178,13 @@ int main(int argc, char const *argv[]) {
 				print_error("Usage: oc edit <file name substring>");
 			}
 			else {
-				// Requires user to set $OCEDITOR bash variable to appropriate editor in .bashrc / .bash_profile
-				string edit_string = "$OCEDITOR $(find ./source/_posts -iname *";
+				string path_to_posts_dir = "";
+				string& pttp_r = path_to_posts_dir;
+				// get the path to the _posts directory, assign to pttp_r
+				pathToPosts(pttp_r);
+				// create the proper post filename with the path obtained above
+				// Requires user to set $OCEDITOR bash variable to appropriate editor in .bashrc / .bash_profile startup file
+				string edit_string = "$OCEDITOR $(find " + pttp_r + " -iname *";
 				Options opt(argc, clvr);
 				string query_string = opt.get_last_positional();
 				edit_string += query_string;
