@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<url>
+  <loc>http://chrissimpkins.github.io/octopus/</loc>
+  <lastmod>2013-09-02T02:54:59+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>http://chrissimpkins.github.io/octopus/cmd_doctor.html</loc>
+  <lastmod>2013-09-02T02:54:59+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://chrissimpkins.github.io/octopus/cmd_edit.html</loc>
+  <lastmod>2013-09-02T02:54:59+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://chrissimpkins.github.io/octopus/cmd_find.html</loc>
+  <lastmod>2013-09-02T02:54:59+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://chrissimpkins.github.io/octopus/cmd_generate.html</loc>
+  <lastmod>2013-09-02T02:54:59+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://chrissimpkins.github.io/octopus/cmd_help.html</loc>
+  <lastmod>2013-09-02T02:54:59+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://chrissimpkins.github.io/octopus/cmd_list.html</loc>
+  <lastmod>2013-09-02T02:54:59+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://chrissimpkins.github.io/octopus/cmd_page.html</loc>
+  <lastmod>2013-09-02T02:54:59+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://chrissimpkins.github.io/octopus/cmd_post.html</loc>
+  <lastmod>2013-09-02T02:54:59+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://chrissimpkins.github.io/octopus/cmd_preview.html</loc>
+  <lastmod>2013-09-02T02:54:59+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://chrissimpkins.github.io/octopus/cmd_publish.html</loc>
+  <lastmod>2013-09-02T02:54:59+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://chrissimpkins.github.io/octopus/cmd_watch.html</loc>
+  <lastmod>2013-09-02T02:54:59+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://chrissimpkins.github.io/octopus/cmd_write.html</loc>
+  <lastmod>2013-09-02T02:54:59+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://chrissimpkins.github.io/octopus/cmd_version.html</loc>
+  <lastmod>2013-09-02T02:54:59+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://chrissimpkins.github.io/octopus/index.html</loc>
+  <lastmod>2013-09-02T02:54:59+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>1.00</priority>
+</url>
+</urlset>
