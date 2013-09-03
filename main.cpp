@@ -178,14 +178,30 @@ int main(int argc, char const *argv[]) {
 				print_error("Usage: oc edit <file name substring>");
 			}
 			else {
+				Options opt(argc, clvr);
 				string path_to_posts_dir = "";
 				string& pttp_r = path_to_posts_dir;
 				// get the path to the _posts directory, assign to pttp_r
 				pathToPosts(pttp_r);
 				// create the proper post filename with the path obtained above
-				// Requires user to set $OCEDITOR bash variable to appropriate editor in .bashrc / .bash_profile startup file
-				string edit_string = "$OCEDITOR $(find " + pttp_r + " -iname *";
-				Options opt(argc, clvr);
+				string edit_string = "";
+				//switches for text editors
+				if (opt.contains("--vim")){
+					edit_string = "vim $(find " + pttp_r + " -iname *";
+				}
+				else if (opt.contains("--sublime")) {
+					edit_string = "subl $(find " + pttp_r + " -iname *";
+				}
+				else if (opt.contains("--emacs")) {
+					edit_string = "emacs $(find " + pttp_r + " -iname *";
+				}
+				else if (opt.contains("--mate")) {
+					edit_string = "mate $(find " + pttp_r + " -iname *";
+				}
+				else {
+					// Requires user to set $OCEDITOR bash variable to appropriate editor in .bashrc / .bash_profile startup file
+					edit_string = "\"$OCEDITOR\" $(find " + pttp_r + " -iname *";
+				}
 				string query_string = opt.get_last_positional();
 				edit_string += query_string;
 				edit_string += "*)";
