@@ -3,7 +3,7 @@
 */
 
 // Constant definitions
-#define VERSION string("0.2.3")
+#define VERSION string("0.2.4")
 #define APPLICATION string("Octopus | The Octopress Commander")
 #define COPYRIGHT string("Copyright 2013 Christopher Simpkins")
 #define LICENSE string("MIT License")
@@ -173,15 +173,21 @@ int main(int argc, char const *argv[]) {
 		}
 		// EDIT ---------------------------------------------------------
 		else if (cmd == "edit") {
+			Options opt(argc, clvr);
+
 			if (argc < 3) {
 				print_error("Please include a file name substring with the edit command.");
-				print_error("Usage: oc edit <file name substring>");
+				print_error("Usage: oc edit <options> <file name substring>");
+			}
+			else if (argc > 2 && opt.get_last_positional().substr(0,1) == "-") {
+				// confirm that the option was not entered as the last positional argument (where file path should be)
+				print_error("Please enter your option before your filename substring.");
+				print_error("Usage: oc edit <options> <file name substring>");
 			}
 			else {
-				Options opt(argc, clvr);
 				string path_to_posts_dir = "";
 				string& pttp_r = path_to_posts_dir;
-				// get the path to the _posts directory, assign to pttp_r
+				// get the path to the _posts directory, assign to pttp_r reference
 				pathToPosts(pttp_r);
 				// create the proper post filename with the path obtained above
 				string edit_string = "";
@@ -481,16 +487,18 @@ inline void show_help() {
 	print("  oc <command> [-shortoption] [--longoption] <argument(s)>\n");
 	// HELP INFO
 	print("Available Commands:");
-	print("  find  \t          find markdown file by filename substring");
-	print("  generate  \t          generate HTML files");
+	print("  doctor  \t          run checks for dependencies");
+	print("  edit <post substr>\t  edit a post Markdown file");
+	print("  find <post substr>\t  find Markdown file by filename substring");
+	print("  generate  \t          generate new static site files (HTML + CSS)");
 	print("  help  \t          view help documentation");
 	print("  list  \t          list your post markdown files");
 	print("  page <page name> \t  create a new page and specify file name");
 	print("  post <post name> \t  create a new post and specify file name");
 	print("  preview  \t          open local server to view your site");
 	print("  publish             \t  publish your site");
-	print("  read <post/page path>   read your post/page in terminal");
 	print("  watch  \t          watch the source and SASS directories for changes");
+	print("  write <post substr> \t  edit file, open local server, watch for changes");
 	print("  version  \t          view current version number");
 }
 
@@ -663,4 +671,3 @@ inline void pathToPublic(string& path_to_public) {
 		path_to_public = ".";
 	}
 }
-
