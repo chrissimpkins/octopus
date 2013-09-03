@@ -272,7 +272,7 @@ int main(int argc, char const *argv[]) {
 				}
 			}
 			else{
-				// Ruby Server
+				// Ruby Server with option to define port
 				string prev_string = "ruby -run -e httpd";
 				string the_port = "8000";   // default to port 8000
 				string server_path = " . "; //default to run in the current working directory
@@ -288,25 +288,17 @@ int main(int argc, char const *argv[]) {
 						the_port = opt.get_last_positional();
 					}
 				}
-				// check for the public directory and open server in it if present, if not check for _deploy directory
-				struct stat sb;
-				const char * pathname_public = "public";
-				const char * pathname_deploy = "_deploy";
-				if (stat(pathname_public, &sb) == 0 && S_ISDIR(sb.st_mode))
-				{
-					server_path = " public ";
-				}
-				else if (stat(pathname_deploy, &sb) == 0 && S_ISDIR(sb.st_mode)) {
-					server_path = " _deploy ";
-				}
-				print("Opening server on port " + the_port);
+				string path_to_public = "";
+				string& ptp_r = path_to_public;
+				pathToPublic(ptp_r);
+				server_path = ptp_r;
 				port_string = "-p " + the_port;
-				//create the Ruby local server command
-				prev_string = prev_string + server_path + port_string;
+				//create Ruby local server command
+				prev_string = prev_string + " " + server_path + " " + port_string;
+				print("Opening local server on port " + the_port);
 				const char* prev_string_cstr = prev_string.c_str();
 				//start the server
 				system(prev_string_cstr);
-
 			}
 		}
 		// WATCH --------------------------------------------------------
@@ -596,7 +588,7 @@ inline int isDirPresent(string& dir) {
 }
 
 /************************************************************
-*  Return path to the user's _posts directory based upon pwd (max depth = 5 levels)
+*  Return path to the user's _posts directory based upon pwd (from max depth = 5 levels)
 *************************************************************/
 inline void pathToPosts(string& path_to_posts) {
 	string dir1 = "./source/_posts";
@@ -635,6 +627,40 @@ inline void pathToPosts(string& path_to_posts) {
 	else {
 		// assume user in the _posts directory if other tests do not match (otherwise they are outside of their Octopress site directory altogether)
 		path_to_posts = ".";
+	}
+}
+
+/************************************************************
+*  Return path to the user's public directory based upon pwd (from max depth = 5 levels)
+*************************************************************/
+inline void pathToPublic(string& path_to_public) {
+	string dir1 = "./public";
+	string dir2 = "../public";
+	string dir3 = "../../public";
+	string dir4 = "../../../public";
+	string dir5 = "../../../../public";
+	string dir6 = "../../../../../public";
+	// test for the correct path to the public directory from the pwd
+	if (isDirPresent(dir1)) {
+		path_to_public = "./public";
+	}
+	else if (isDirPresent(dir2)) {
+		path_to_public = "../public";
+	}
+	else if (isDirPresent(dir3)) {
+		path_to_public = "../../public";
+	}
+	else if (isDirPresent(dir4)) {
+		path_to_public = "../../../public";
+	}
+	else if (isDirPresent(dir5)) {
+		path_to_public = "../../../../public";
+	}
+	else if (isDirPresent(dir6)) {
+		path_to_public = "../../../../../public";
+	}
+	else {
+		path_to_public = ".";
 	}
 }
 
