@@ -12,7 +12,7 @@
 	<meta name="msvalidate.01" content="B7F76ABC07B92C53D7A954927CB1BE82" />
 
 <title>Octopus | Octopress Site Management Simplified</title>
-<meta name="description" content="Octopus is a power tool for your Octopress and Jekyll powered site.">
+<meta name="description" content="Octopus is a jetpack for your Octopress + Jekyll powered website.">
 <meta name="keywords" content="octopus, octopress, octopress commander, jekyll, static html, website, generator, command line, CLI">
 
 <!--[if lt IE 9]>
@@ -49,7 +49,7 @@
 				<span class="post_author">Developed by&nbsp;<a href="http://www.github.com/chrissimpkins">Chris Simpkins</a> | <a href="https://github.com/chrissimpkins/octopus/blob/master/LICENSE">MIT license</a></span>
 				<span class="post_author"><a href="https://github.com/chrissimpkins/octopus/tarball/master" class="opicon" title="Download Octopus Files"><i class="icon-download icon-4x"></i></a> <a href="https://github.com/chrissimpkins/octopus" class="opicon" title="View the Octopress Project on GitHub"><i class="icon-github icon-4x"></i></a></span>
 
-				<h2>Octopus is a <i class="icon-rocket"></i> for your Octopress & Jekyll powered site.  With a powerful set of commands that provide an array of site management features, you should be able to focus on your content</h2>
+				<h2>Octopus is a <i class="icon-rocket"></i> for your Octopress + Jekyll powered site.  With a powerful set of commands that provide an array of site management features, you should be able to focus on your content</h2>
 				<h2>...instead of on shell commands.</h2>
 <hr>
 <h1>Simple Workflow</h1>
@@ -57,14 +57,14 @@
 <h3>Create a New Post Markdown File</h3>
 <span style="text-align:center !important;"><pre><code><span class="lavender">oc post</span> "This is a cool post"</code></pre></span>
 
-<h3 style="margin-top: 75px;">Edit Post in User Specified Editor<br/>(with Substring Search File Launcher) <br/>+<br/> Watch for Changes & Auto-Generate Static Files <br/>+<br/>View Edits with Local Server</h3>
+<h3 style="margin-top: 75px;">Edit Post in User Specified Editor<br/>(with Substring Search File Launcher) <br/>+<br/> Watch for Changes & Auto-Generate Static Files <br/>+<br/>Launch Local Server to View Edits</h3>
 <pre><code><span class="lavender">oc write</span> "cool post"</code></pre>
 
-<h3 style="margin-top: 75px;">Publish Your Post <br/>+<br/> git commit source</h3>
+<h3 style="margin-top: 75px;">Publish to Your Remote Server</h3>
 <pre><code><span class="lavender">oc publish</span></code></pre>
 <hr>
 <h1>Features</h1>
-<p>Octopus includes a number of file management and efficiency features for your content development workflow.</p>
+<p>Octopus includes a number of file management, site enhancement, and efficiency features for your content development workflow.</p>
 <p>Click through any of the commands below to learn more.</p>
 <hr>
 <h1 id="commandlist">Commands</h1>
@@ -84,16 +84,19 @@
 
 <hr>
 <h1>Install</h1>
-<p>1. <a href="https://github.com/chrissimpkins/octopus/tarball/master">Download the source files</a></p>
-<p>2. Compile and install with the following command:</p>
+<p>1. <a href="https://github.com/chrissimpkins/octopus/tarball/master">Download & decompress the source files</a></p>
+<p>2. Compile and install with one of the following commands:</p>
+<h3><a href="http://en.wikipedia.org/wiki/Clang">clang++ compiler</a></h3>
 <pre><code>make && make install</code></pre>
-<p>3. Configure command-specific settings (optional)</p>
-<p>4. Done</p>
+<h3><a href="http://en.wikipedia.org/wiki/GNU_Compiler_Collection">gcc/g++ compiler</a></h3>
+<pre><code>make gpp && make install</code></pre>
+<p>3. <a href="howto_text-editor-default-settings.html">Configure your default text editor</a></p>
+<p>4. Done.</p>
 
 <hr>
 <h1>Support</h1>
 <p>Bug reports should be filed as a new issue on the <a href="https://github.com/chrissimpkins/octopus/issues/new">Octopus GitHub repository</a>.  Please include a detailed description of your problem in the issue report.</p>
-<p>Feel free to <a href="http://twitter.com/csimpkins">contact me</a> <i class="icon-twitter"></i> to discuss any questions or problems.</p>
+<p>Feel free to <a href="http://twitter.com/csimpkins">contact me</a> <i class="icon-twitter"></i> with questions or problems.</p>
 
 			</article><!-- end of .post -->
 		</section><!-- end of #post -->

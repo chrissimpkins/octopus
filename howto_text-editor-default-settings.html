@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" media="all" href="css/main.css">
+	<link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+	<link href='http://fonts.googleapis.com/css?family=Merriweather:400,700,700italic,400italic' rel='stylesheet' type='text/css'>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+
+<title>How to Set Your Default Text Editor in Octopus | Octopus</title>
+<meta name="description" content="Learn how to set the default text editor to launch your Markdown post files with Octopus.">
+<meta name="keywords" content="octopus, octopress, octopress commander, text editor, documentation, write, edit, how to use, docs">
+
+<!--[if lt IE 9]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-43699107-1', 'chrissimpkins.github.io');
+  ga('send', 'pageview');
+
+</script>
+</head>
+
+<body style="zoom: 1;">
+
+	<article id="content">
+		<header>
+			<a id="logo" href="index.html">OC</a>
+		</header>
+		<section id="post">
+
+			<h1 class="section_separator">
+				octopus | the octopress commander
+			</h1>
+			<hr>
+			<article class="post">
+
+<h1>How to Set Your Default Text Editor in Octopus</h1>
+<p>The Octopus <a href="cmd_write.html">write</a> <sup><i class="icon-rocket"></i></sup> and <a href="cmd_edit.html">edit</a> <sup><i class="icon-rocket"></i></sup> commands automatically open a Markdown file in the text editor of your choice.  If you can open the application from the command line with a filename argument, then Octopus can be configured to use it.</p>
+<h2>Assign the Default Editor</h2>
+<p>The path to your default editor (or the command for the editor if it is on your PATH) is used to define a shell variable in your shell startup file.  If you are using the bash shell, this will be your <span style="font-family: monospace;">~/.bashrc</span> or <span style="font-family: monospace;">~/.bash_profile</span> file.  Octopus uses the $OCEDITOR variable in these commands.  Let's set it up.</p>
+<p>Open your shell startup file in a text editor and enter a new line that includes a variable definition following the syntax shown in the examples below:</p>
+<h2>Default to Vim</h2>
+<pre><code>export $OCEDITOR="vim"</code></pre>
+<h2>Default to Emacs</h2>
+<pre><code>export $OCEDITOR="emacs"</code></pre>
+<h2>Default to Sublime Text</h2>
+<pre><code>export $OCEDITOR="subl"</code></pre>
+<h2>Default to Text Mate</h2>
+<pre><code>export $OCEDITOR="mate"</code></pre>
+<h2>Default to Another Text Editor</h2>
+<pre><code>export $OCEDITOR="/path/to/the/editor"</code></pre>
+<p>If your terminal is open, run a source command on the file that you modified, either <span style="font-family:monospace;">source .bashrc</span> or <span style="font-family:monospace;">source .bash_profile</span>, to export the variable in the open shell and you should be good to go.  This final step is not necessary the next time that you open your terminal.</p>
+<p>Once these configuration steps are complete, the <a href="cmd_write.html">write</a> <sup><i class="icon-rocket"></i></sup> and <a href="cmd_edit.html">edit</a> <sup><i class="icon-rocket"></i></sup> commands will automatically launch your file in the text editor that you specified.</p>
+
+			</article><!-- end of .post -->
+		</section><!-- end of #post -->
+
+		<footer>
+			<h1 class="section_separator"><span></span></h1>
+
+			<nav><a href="index.html">Home</a>&nbsp;|&nbsp;<a href="index.html#commandlist">Commands</a>&nbsp;|&nbsp;<a href="https://github.com/chrissimpkins/octopus">Source</a></nav>
+			<p class="centertext"><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">CC-SA 3.0</a></p>
+		</footer>
+
+	</article><!-- end of #content -->
+  </body>
+</html>
