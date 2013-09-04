@@ -38,7 +38,6 @@ using std::endl;
 /******************************************
 *  G'day, I'm main()
 *******************************************/
-// Handles command line parsing
 
 int main(int argc, char const *argv[]) {
 	//user did not enter enough arguments in the command
