@@ -3,7 +3,7 @@
 */
 
 // Constant definitions
-#define VERSION string("0.2.4")
+#define VERSION string("0.2.5")
 #define APPLICATION string("Octopus | The Octopress Commander")
 #define COPYRIGHT string("Copyright 2013 Christopher Simpkins")
 #define LICENSE string("MIT License")
@@ -318,15 +318,42 @@ int main(int argc, char const *argv[]) {
 		}
 		// WRITE ---------------------------------------------------------
 		else if (cmd == "write") {
+			Options opt(argc, clvr);
+
 			if (argc < 3) {
 				print_error("Please include a file name substring with the write command.");
-				print_error("Usage: oc write <file name substring>");
+				print_error("Usage: oc write <options> <file name substring>");
+			}
+			else if (argc > 2 && opt.get_last_positional().substr(0,1) == "-") {
+				// confirm that the option was not entered as the last positional argument (where file path should be)
+				print_error("Please enter your option before your filename substring.");
+				print_error("Usage: oc write <options> <file name substring>");
 			}
 			else {
 				// EDIT
-				// Requires user to set $OCEDITOR bash variable to appropriate editor in .bashrc / .bash_profile
-				string edit_string = "$OCEDITOR $(find ./source/_posts -iname *";
-				Options opt(argc, clvr);
+				string path_to_posts_dir = "";
+				string& pttp_r = path_to_posts_dir;
+				// get the path to the _posts directory, assign to pttp_r reference
+				pathToPosts(pttp_r);
+				// create the proper post filename with the path obtained above
+				string edit_string = "";
+				//switches for text editors
+				if (opt.contains("--vim")){
+					edit_string = "vim $(find " + pttp_r + " -iname *";
+				}
+				else if (opt.contains("--sublime")) {
+					edit_string = "subl $(find " + pttp_r + " -iname *";
+				}
+				else if (opt.contains("--emacs")) {
+					edit_string = "emacs $(find " + pttp_r + " -iname *";
+				}
+				else if (opt.contains("--mate")) {
+					edit_string = "mate $(find " + pttp_r + " -iname *";
+				}
+				else {
+					// Requires user to set $OCEDITOR bash variable to appropriate editor in .bashrc / .bash_profile startup file
+					edit_string = "\"$OCEDITOR\" $(find " + pttp_r + " -iname *";
+				}
 				string query_string = opt.get_last_positional();
 				edit_string += query_string;
 				edit_string += "*)";
@@ -341,10 +368,12 @@ int main(int argc, char const *argv[]) {
 					if (childpid == 0) {
 						//child process
 						//cout << "Watching on process " << getpid() << endl;
+						// WATCH
 						system("oc watch");
 					}
 					else {
 						//parent process
+						// PREVIEW
 						if (system("oc preview") == 0){
 							// kill the child process when user sends SIGTERM
 							kill(childpid, SIGTERM);
