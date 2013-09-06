@@ -42,8 +42,8 @@
 			<article class="post">
 
 <h1>find</h1>
-<p>The find command performs a search for a post markdown file by filename substring.</p>
-<p>You can use this command from any directory level in your Octopress directory.  The command allows you to identify a post or posts by any unique substring in the Markdown filename, including by date since this is included in every post filename.</p>
+<p>The find command performs a search for a post Markdown file by filename substring.</p>
+<p>You can use this command from any subdirectory in your main Octopress directory.  The command allows you to identify one or more posts by any unique substring in the Markdown filename, including by date as this is included in every post filename.</p>
 <h2></h2>
 <h1>Usage</h1>
 <pre><code><span class="lavender">oc find</span> &lt;post filename substring&gt;</code></pre>
@@ -74,16 +74,17 @@
 
 <h1>Additional Information</h1>
 <h2 id="uniquedate">Unique Dates</h2>
-<p>You can select one or more posts by date of publication with a unique date string because each Markdown file is timestamped with the date that the post was generated in its filename.  Use one of the formats shown above to find one or more posts on a specific day, or during your specified combination of day, month, and year.</p>
+<p>You can select one or more posts by date of Markdown file creation with a unique date string because each Markdown file is timestamped with its date of origin in the filename.  Use one of the formats shown above to find one or more posts on a specific day, or during your specified combination of day, month, and year.</p>
 <h2 id="uniqueword">Unique Words</h2>
-<p>You can select one or more posts with a unique word in the post Markdown filename.  The find command performs a case <em>insensitive</em> search for the word that you submit.</p>
+<p>You can select one or more posts with a unique word in the post Markdown filename.  The find command performs a case <em>insensitive</em> search for the word that you submit.  Unless you manually modify them, all post Markdown filenames are in lower case characters.</p>
 <h2 id="uniquess">Unique Substrings</h2>
-<p>You can select one or more posts with a unique substring in the post Markdown filename. Please familiarize yourself with the filename format for your post Markdown files.  They include a date followed by the post title followed by the .markdown file suffix.  The date strings and each word in the post name is separated by a dash '-' and the dash should be included in any multi-word (or date string) query that you submit.  Here are a couple of examples:</p>
+<p>You can select one or more posts with a unique substring in the post Markdown filename. Please familiarize yourself with the filename format for your post Markdown files.  They include a date, followed by the post title, and lastly the .markdown file suffix.</p>
+<p>The date strings and words in the filename are separated by dashes '-'.  The dash character should be included in any multi-word (or date string) query that you submit with this command or any of the other Octopus commands that use filename substring search to locate your Markdown files.  Here are a couple of examples:</p>
 <pre><code><span class="lavender">oc find</span> "multi-word-post-search"</code></pre>
 <pre><code><span class="lavender">oc find</span> "2013-08"</code></pre>
 <h1>Advanced Features</h1>
-<h2>Use find with Other Applications</h2>
-<p>You can use your shell's command expansion feature to pass the result of the oc find command to any other application.  The generic command syntax looks like this:</p>
+<h2>Command Expansion with find</h2>
+<p>You can use your shell's command expansion feature to pass the <i>result</i> of the oc find command to any other application.  The generic command syntax looks like this:</p>
 <pre><code>&lt;shell command&gt; $(oc find &lt;search string&gt;)</code></pre>
 <p>The result of the oc find command is used as the filename (or filenames if the search string is included in multiple posts) argument for the shell command.</p>
 <p>Here is an example of how you gzip all posts that were generated on August 18th with the gzip application:</p>

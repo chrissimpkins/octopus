@@ -43,8 +43,17 @@
 			<article class="post">
 
 <h1>post</h1>
-<p>The post command generates a new post Markdown file in the source/_posts directory of your Octopress site.  You specify the name of your post as the argument for this command.</p>
-<p>This command automatically adds SEO meta fields (<em>description</em> & <em>keywords</em>) and a field to that allows you to indicate that the post is a draft (<em>published</em>) to the default Octopress post YAML frontmatter.  Octopus automatically includes the date that the Markdown file is created in the Markdown filename string.  This date is carried forward to the final static HTML file name when you use the <a href="cmd_generate.html">generate</a> <sup><i class="icon-rocket"></i></sup> or <a href="cmd_publish.html">publish</a> <sup><i class="icon-rocket"></i></sup> commands.</p>
+<p>The post command generates a new post Markdown file in the <span style="font-family:monospace;">source/_posts</span> directory of your Octopress site.  You specify the name of your post as the argument for this command.</p>
+<h3>Meta Tags</h3>
+<p>The post command adds the SEO meta fields <em>description</em> & <em>keywords</em> to the standard Octopress YAML frontmatter in your Markdown file.  Your HTML file will include the following meta tags in the head section when you generate your static files:</p>
+<pre><code>&lt;meta name="description" content=" "&gt;</code></pre>
+<pre><code>&lt;meta name="keywords" content=" "&gt;</code></pre>
+<p>Add a sentence or two that describes your post and a comma delimited keyword list to the YAML fields in order to populate these meta tags when your static files are generated</p>
+<h3>Draft Posts</h3>
+<p>The post command also adds a YAML field that allows you to indicate that the post is a draft (the <em>published</em> field) so that it is not pushed to your remote server the next time that you use the <a href="cmd_publish.html">publish</a> <sup><i class="icon-rocket"></i></sup> command.  By default, the post <em>is not</em> considered a draft post.  To make the post a draft, change the published YAML field to:</p>
+<pre><code>published: false</code></pre>
+<h3>Dates</h3>
+<p>Octopus automatically includes the date of origin in the Markdown filename string and YAML front matter.  This date is carried forward to the final static HTML file name when you use the <a href="cmd_generate.html">generate</a> <sup><i class="icon-rocket"></i></sup> or <a href="cmd_publish.html">publish</a> <sup><i class="icon-rocket"></i></sup> commands.</p>
 <h2></h2>
 <h1>Usage</h1>
 <pre><code><span class="lavender">oc post</span> &lt;post name&gt;</code></pre>
@@ -66,7 +75,7 @@
 <th>Description</th>
 </tr>
 <tr>
-<td>--octo</td>
+<td>--opress</td>
 <td>use the default Octopress/Jekyll post generator</td>
 </tr>
 </table>
@@ -75,12 +84,12 @@
 <p>To create the Markdown filename <em>[DATE]-this-is-my-post-title.markdown</em> which will generate the HTML post <em>[DATE]-this-is-my-post-title.html</em> on your site, use the following command:</p>
 <pre><code><span class="lavender">oc post</span> "This is My Post Title"</code></pre>
 <p>The Markdown file creation date is automatically added to the post filename string. This date is also used in the filename string for the static HTML file that is generated from your Markdown.</p>
-<p>The character cases that you use in the post name argument are carried forward to the <em>title</em> YAML frontmatter in your Markdown file.  This will be the &lt;title&gt; tag in your deployed static HTML file.  Octopus automatically converts all characters to lower case and replaces spaces with dashes for the Markdown filename.</p>
+<p>The character cases that you use in the post name argument are used in the <em>title</em> YAML field of your Markdown file.  This will be the &lt;title&gt; tag in your deployed static HTML file.  Octopus automatically converts all characters to lower case and replaces spaces with dashes for the Markdown filename.</p>
 <p>Note this filename format if you use the <a href="cmd_find.html">find</a> <sup><i class="icon-rocket"></i></sup> command or any of the commands that allow you to work with files by Markdown filename substring.</p>
 <h2>Octopress Generator</h2>
-<p>If you would prefer to use the default Octopress new post generator, use the <em>--octo</em> switch with this syntax:</p>
-<pre><code><span class="lavender">oc post --octo</span> "This is My Post Title"</code></pre>
-<p>This switch eliminates the additional YAML frontmatter information that OC adds to your post.  Your new post Markdown is generated as if you entered the following Octopress/Jekyll command:</p>
+<p>If you would prefer to use the default Octopress new post generator, use the <em>--opress</em> switch with this syntax:</p>
+<pre><code><span class="lavender">oc post --opress</span> "This is My Post Title"</code></pre>
+<p>This switch eliminates the additional YAML frontmatter information that Octopus adds to your post.  Your new post Markdown is generated as if you entered the following Octopress/Jekyll command:</p>
 <pre><code>rake new_post["This is My Post Title"]</code></pre>
 			</article><!-- end of .post -->
 		</section><!-- end of #post -->

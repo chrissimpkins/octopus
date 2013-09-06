@@ -43,14 +43,15 @@
 			<article class="post">
 
 <h1>write</h1>
-<p>The write command performs a series of tasks that are commonly performed when you edit your site content.  It runs the <a href="cmd_edit.html">edit</a> <sup><i class="icon-rocket"></i></sup>, <a href="cmd_preview.html">preview</a> <sup><i class="icon-rocket"></i></sup>, and <a href="cmd_watch.html">watch</a> <sup><i class="icon-rocket"></i></sup> commands simultaneously.  This does the following:</p>
+<p>The write command initiates a series of actions that are commonly performed when you edit your site content.  It runs the <a href="cmd_edit.html">edit</a> <sup><i class="icon-rocket"></i></sup>, <a href="cmd_preview.html">preview</a> <sup><i class="icon-rocket"></i></sup>, and <a href="cmd_watch.html">watch</a> <sup><i class="icon-rocket"></i></sup> commands simultaneously.  This does the following:</p>
 <ul>
 	<li><small><i class="icon-caret-right"></i> Opens your Markdown file in the $OCEDITOR text editor</small></li>
 	<li><small><i class="icon-caret-right"></i> Starts a local server at port 8000</small></li>
 	<li><small><i class="icon-caret-right"></i> Watches your site directory for SASS/CSS and Markdown file changes</small></li>
 </ul>
-<p>If you do not want to perform all of these commands simultaneously, you can manually perform any of the functions with the respective command.</p>
-<p>The write command opens a Markdown file (or files) in the <span style="font-family: monospace;">source/_posts</span> path using a filename substring search with the <a href="cmd_find.html">find</a> <sup><i class="icon-rocket"></i></sup> command.  Enter the filename substring as the argument for your command.</p>
+<p>If you do not want to perform all of these commands simultaneously, you can manually perform any of the actions with the respective command.</p>
+<p>The write command opens a Markdown file (or multiple files) in the <span style="font-family: monospace;">source/_posts</span> path using a filename substring search with the <a href="cmd_find.html">find</a> <sup><i class="icon-rocket"></i></sup> command.  Enter the Markdown post filename substring as the argument for your command.  This argument can be a date because every Markdown filename includes the date of origin in the filename.  See the find command documentation for additional details and examples.</p>
+<p>Your default text editor is defined as a shell variable ($OCEDITOR) in your shell startup file.  You can find more information about how to do this <a href="howto_text-editor-default-settings.html">here</a>.  Commands for several of the most common/popular text editors are available as options and do not require you to modify your shell startup file.  See the <a href="#writeoptions">Options section</a> below for details.</p>
 <h2></h2>
 <h1>Usage</h1>
 <pre><code><span class="lavender">oc write</span> &lt;post filename substring&gt;</code></pre>
@@ -65,13 +66,43 @@
 <td>a substring in the Markdown filename</td>
 </tr>
 </table>
-<h1>Options</h1>
-<p class="centertext">None</p>
+<h1 id="writeoptions">Options</h1>
+<table border="1">
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>--emacs</td>
+<td>open the emacs text editor</td>
+</tr>
+<tr>
+<td>--mate</td>
+<td>open the Text Mate text editor</td>
+</tr>
+<tr>
+<td>--sublime</td>
+<td>open the Sublime Text editor</td>
+</tr>
+<tr>
+<td>--vim</td>
+<td>open the vim text editor</td>
+</tr>
+</table>
 <h1>Examples</h1>
-<h4 class="centertext">Edit a Post that Contains the Substring "super-cool-post"</h4>
+<h3>Edit a Post with Default Editor that Contains the Substring "super-cool-post"</h3>
 <pre><code><span class="lavender">oc write</span> "super-cool-post"</code></pre>
-<h4 class="centertext">Edit a Post that was Generated on August 30, 2013</h4>
+<h3>Edit a Post with Default Editor that was Generated on August 30, 2013</h3>
 <pre><code><span class="lavender">oc write</span> 2013-08-30</code></pre>
+<h3>Edit a Post with Emacs</h3>
+<pre><code><span class="lavender">oc write</span> --emacs 2013-08-30</code></pre>
+<h3>Edit a Post with Sublime Text</h3>
+<pre><code><span class="lavender">oc write</span> --sublime 2013-08-30</code></pre>
+<h3>Edit a Post with Text Mate</h3>
+<pre><code><span class="lavender">oc write</span> --mate 2013-08-30</code></pre>
+<h3>Edit a Post with Vim</h3>
+<pre><code><span class="lavender">oc write</span> --vim 2013-08-30</code></pre>
+
 <h1>Additional Notes</h1>
 <p>The write command opens a local server at port 8000.  You can view your site at <span style="font-family: monospace;">http://localhost:8000</span>.  If you would like to use a different port, you (currently) need to run each of the included commands manually.  See the <a href="cmd_preview.html">preview</a> <sup><i class="icon-rocket"></i></sup> command documentation for more information on how to change the port.</p>
 <p>You do not need to run the <a href="cmd_generate.html">generate</a> <sup><i class="icon-rocket"></i></sup> command to make new static site files after you edit the Markdown or SCSS/CSS files.  This occurs automatically.  Just reload your browser to see the changes after you save the files.</p>

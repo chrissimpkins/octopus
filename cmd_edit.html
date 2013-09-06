@@ -43,8 +43,9 @@
 			<article class="post">
 
 <h1>edit</h1>
-<p>The edit command launches a post Markdown file in the user-defined default text editor.  You define the default editor by creating the <code>$OCEDITOR</code> variable in your shell startup file.</p>
-<p>This command is automatically run as part of the workflow sequence when you use the <a href="cmd_write.html">write</a> <sup><i class="icon-rocket"></i></sup> command.</p>
+<p>The edit command launches a post Markdown file in the user-defined default text editor.  You define the default editor by <a href="howto_text-editor-default-settings.html">creating the <span style="font-family:monospace;">$OCEDITOR</span> variable in your shell startup file</a>.  Commands for several common+popular text editors are built in to the application and can be used by adding an option to the command.  See the option list and examples below for more details.</p>
+<p>Use a substring in the post Markdown file name as the argument for this command.  See the <a href="cmd_find.html">find</a> <sup><i class="icon-rocket"></i></sup> command documentation for more details and examples.</p>
+<p>The edit command is automatically run as part of the editing workflow actions that occur when you use the <a href="cmd_write.html">write</a> <sup><i class="icon-rocket"></i></sup> command.  See the write command documentation for more details.</p>
 <h2></h2>
 <h1>Usage</h1>
 <pre><code><span class="lavender">oc edit</span> &lt;post filename substring&gt;</code></pre>
@@ -60,7 +61,40 @@
 </tr>
 </table>
 <h1>Options</h1>
-<p class="centertext">None</p>
+<table border="1">
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>--emacs</td>
+<td>open the emacs text editor</td>
+</tr>
+<tr>
+<td>--mate</td>
+<td>open the Text Mate text editor</td>
+</tr>
+<tr>
+<td>--sublime</td>
+<td>open the Sublime Text editor</td>
+</tr>
+<tr>
+<td>--vim</td>
+<td>open the vim text editor</td>
+</tr>
+</table>
+<h1>Examples</h1>
+<h3>Edit a Post in the Default Editor</h3>
+<pre><code><span class="lavender">oc edit</span> "substring"</code></pre>
+<h3>Edit a Post in Emacs</h3>
+<pre><code><span class="lavender">oc edit</span> --emacs "substring"</code></pre>
+<h3>Edit a Post in Text Mate</h3>
+<pre><code><span class="lavender">oc edit</span> --mate "substring"</code></pre>
+<h3>Edit a Post in Sublime Text</h3>
+<pre><code><span class="lavender">oc edit</span> --sublime "substring"</code></pre>
+<h3>Edit a Post in Vim</h3>
+<pre><code><span class="lavender">oc edit</span> --vim "substring"</code></pre>
+
 
 			</article><!-- end of .post -->
 		</section><!-- end of #post -->
