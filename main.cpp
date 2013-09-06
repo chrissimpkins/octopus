@@ -3,7 +3,7 @@
 */
 
 // Constant definitions
-#define VERSION string("0.2.5")
+#define VERSION string("0.2.6")
 #define APPLICATION string("Octopus | The Octopress Commander")
 #define COPYRIGHT string("Copyright 2013 Christopher Simpkins")
 #define LICENSE string("MIT License")
@@ -72,7 +72,7 @@ int main(int argc, char const *argv[]) {
 				Options opt(argc, clvr);
 				const string title = opt.get_last_positional();
 				//user requests octopress generation of the post
-				if (opt.contains("--octo")){
+				if (opt.contains("--opress")){
 					//create the command
 					const string new_post_command = "bundle exec rake new_post['" + title + "']";
 					const char * npc_c = new_post_command.c_str();
@@ -265,7 +265,7 @@ int main(int argc, char const *argv[]) {
 		else if (cmd == "preview") {
 			Options opt = Options(argc, clvr);
 			//user specifies that they want the Octopress generated server
-			if (opt.contains("--octo")){
+			if (opt.contains("--opress")){
 				const char * prev_string = "bundle exec rake preview";
 				print("Opening local server on port 4000.");
 				if (system(prev_string) != 0){
@@ -525,9 +525,9 @@ inline void show_help() {
 	print("  post <post name> \t  create a new post and specify file name");
 	print("  preview  \t          open local server to view your site");
 	print("  publish             \t  publish your site");
+	print("  version  \t          view current version number");
 	print("  watch  \t          watch the source and SASS directories for changes");
 	print("  write <post substr> \t  edit file, open local server, watch for changes");
-	print("  version  \t          view current version number");
 }
 
 /******************************************
