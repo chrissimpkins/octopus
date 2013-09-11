@@ -3,7 +3,7 @@
 */
 
 // Constant definitions
-#define VERSION string("0.2.6")
+#define VERSION string("0.2.7")
 #define APPLICATION string("Octopus | The Octopress Commander")
 #define COPYRIGHT string("Copyright 2013 Christopher Simpkins")
 #define LICENSE string("MIT License")
@@ -17,7 +17,7 @@
 
 // C headers
 #include <sys/stat.h>	// local directory check functions
-#include <unistd.h>     // fork
+#include <unistd.h>     // fork, chdir
 #include <sys/types.h>  // kill
 #include <signal.h>     // kill
 
@@ -132,6 +132,52 @@ int main(int argc, char const *argv[]) {
 			}
 			else {
 				//do nothing Jekyll provides an appropriate flat file generation message for user
+			}
+		}
+		// PEEK (view files in octopress directory) ---------------------------------
+		else if (cmd == "peek") {
+			if (argc < 3) {
+				print_error("Please include the directory argument for the peek command.");
+				print_error("Usage: oc peek <directory>");
+			}
+			else {
+				string seekpath = "";
+				string foundpath = "";
+				if (clv.at(2) == "source") {
+					//view files in source directory
+					seekpath = "source";
+				}
+				else if (clv.at(2) == "custom") {
+					// view files in the source/_includes/custom directory
+					seekpath = "source/_includes/custom";
+				}
+				else if (clv.at(2) == "images") {
+					// view files in the source/images directory
+					seekpath = "source/images";
+				}
+				else if (clv.at(2) == "js") {
+					// navigate to the source/javascripts directory
+					seekpath = "source/javascripts";
+				}
+				else if (clv.at(2) == "layouts") {
+					// navigate to the source/_layouts directory
+					seekpath = "source/_layouts";
+				}
+				else if (clv.at(2) == "posts") {
+					// navigate to the source/_posts directory
+					seekpath = "source/_posts";
+				}
+				else if (clv.at(2) ==  "sass") {
+					// navigate to the sass directory
+					seekpath = "sass";
+				}
+
+				string& seek_r = seekpath;
+				string& found_r = foundpath;
+				pathToDir(seek_r, found_r);
+				string cd_cmd = "ls -lhF \"" + found_r + "\"";
+				const char * cd_cmd_c = cd_cmd.c_str();
+				system(cd_cmd_c);
 			}
 		}
 		// LIST (post files) ---------------------------------------------
@@ -699,3 +745,42 @@ inline void pathToPublic(string& path_to_public) {
 		path_to_public = ".";
 	}
 }
+
+/************************************************************
+*  Return path to the argument specified directory based upon pwd (from max depth = 5 levels)
+*************************************************************/
+// arguments: directory_string = path string seeking in; path_to_dir = path directory found out
+inline void pathToDir(string& directory_string, string& path_to_dir) {
+	string dir1 = "./" + directory_string;              //in the directory
+	string dir2 = "../" + directory_string;             //one level deep
+	string dir3 = "../../" + directory_string;          //two levels deep
+	string dir4 = "../../../" + directory_string;       //three levels deep
+	string dir5 = "../../../../" + directory_string;    //four levels deep
+	string dir6 = "../../../../../" + directory_string; //five levels deep
+	// test for the correct path to the public directory from the pwd
+	if (isDirPresent(dir1)) {
+		path_to_dir = dir1;
+	}
+	else if (isDirPresent(dir2)) {
+		path_to_dir = dir2;
+	}
+	else if (isDirPresent(dir3)) {
+		path_to_dir = dir3;
+	}
+	else if (isDirPresent(dir4)) {
+		path_to_dir = dir4;
+	}
+	else if (isDirPresent(dir5)) {
+		path_to_dir = dir5;
+	}
+	else if (isDirPresent(dir6)) {
+		path_to_dir = dir6;
+	}
+	else {
+		path_to_dir = ".";
+	}
+
+}
+
+
+
