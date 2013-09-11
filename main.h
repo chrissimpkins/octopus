@@ -16,5 +16,6 @@ inline std::string getPostHeader(std::string title, std::string postdate, std::s
 inline int isDirPresent(std::string& dir);
 inline void pathToPosts(std::string& path_to_posts);
 inline void pathToPublic(std::string& path_to_public);
+inline void pathToDir(std::string& directory_string, std::string& path_to_dir);
 
 #endif
