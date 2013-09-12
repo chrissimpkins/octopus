@@ -3,7 +3,7 @@
 */
 
 // Constant definitions
-#define VERSION string("0.2.7")
+#define VERSION string("0.2.8")
 #define APPLICATION string("Octopus | The Octopress Commander")
 #define COPYRIGHT string("Copyright 2013 Christopher Simpkins")
 #define LICENSE string("MIT License")
@@ -174,9 +174,18 @@ int main(int argc, char const *argv[]) {
 
 				string& seek_r = seekpath;
 				string& found_r = foundpath;
+				//get path to the directory
 				pathToDir(seek_r, found_r);
+				//print message for user to describe shortcut to cd to directory
+				string usermsg = "'cd " + found_r + "' to make this your working directory.\n";
+				print(usermsg);
+				// print descriptive message
+				string desc_msg = "Your " + seekpath + " directory contents:\n";
+				print(desc_msg);
+
 				string cd_cmd = "ls -lhF \"" + found_r + "\"";
 				const char * cd_cmd_c = cd_cmd.c_str();
+				// run the peek command
 				system(cd_cmd_c);
 			}
 		}
@@ -568,6 +577,7 @@ inline void show_help() {
 	print("  help  \t          view help documentation");
 	print("  list  \t          list your post markdown files");
 	print("  page <page name> \t  create a new page and specify file name");
+	print("  peek <directory> \t  view contents of an Octopress directory");
 	print("  post <post name> \t  create a new post and specify file name");
 	print("  preview  \t          open local server to view your site");
 	print("  publish             \t  publish your site");
