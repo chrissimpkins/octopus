@@ -3,7 +3,7 @@
 */
 
 // Constant definitions
-#define VERSION string("0.2.8")
+#define VERSION string("0.2.10")
 #define APPLICATION string("Octopus | The Octopress Commander")
 #define COPYRIGHT string("Copyright 2013 Christopher Simpkins")
 #define LICENSE string("MIT License")
@@ -65,7 +65,7 @@ int main(int argc, char const *argv[]) {
 		else if (cmd == "post") {
 			if (argc < 3){
 				print_error("Please include the title for your post after the command.");
-				print_error("Usage : oc post 'A cool post title'");
+				print_error("Usage : oc post <post title>");
 				return 1;
 			}
 			else{
@@ -108,7 +108,7 @@ int main(int argc, char const *argv[]) {
 		else if (cmd == "page") {
 			if (argc < 3){
 				print_error("Please include the title for your page after the command.");
-				print_error("Usage : oc page 'A cool page title'");
+				print_error("Usage : oc page <page title>");
 				return 1;
 			}
 			else{
@@ -122,6 +122,71 @@ int main(int argc, char const *argv[]) {
 				system(npc_c);
 				return 0;
 			}
+		}
+		// CRUNCH (PNG & JPG Image optimization) ------------------------
+		else if (cmd == "crunch") {
+			Options opt(argc, clvr);
+
+			if (argc < 4) {
+				print_error("Please include a switch that indicates what type of file you would like to compress.");
+				print_error("Usage: oc crunch (--jpg|--png) <file name substring>");
+				return 1;
+			}
+			else if (argc > 2 && opt.get_last_positional().substr(0,1) == "-" && !opt.contains("--all") && !opt.contains("-a")) {
+				// confirm that the option was not entered as the last positional argument (where file name substring should be)
+				print_error("Please enter your option before your filename substring.");
+				print_error("Usage: oc crunch (--jpg|--png) <file name substring>");
+				return 1;
+			}
+			if (opt.contains("--png") || opt.contains("--jpg")) {
+				string seekpath = "source/images";
+				string foundpath = "";  // the path to the source/images directory
+				string found_file = ""; // the file path result of find, determined with find command in case-insensitive manner
+				string command = "";   //the optimization command, determined programmatically below
+				string query_string = "";
+
+				string& seek_r = seekpath;
+				string& found_r = foundpath;
+				//get path to the directory
+				pathToDir(seek_r, found_r);
+				// process jpg
+				if (opt.contains("--jpg")) {
+					query_string = opt.get_last_positional();
+					found_file = "$(find " + found_r + " -iname \\*" + query_string + "\\*.jpg)";
+					command = "jpegtran -copy none -optimize -progressive";
+					string cmd_string = command + " " + found_file + ">" + found_file + ".tmp";
+					string rep_string = "mv " + found_file + ".tmp " + found_file;
+					const char* cmd_str_c = cmd_string.c_str();
+					const char* rep_str_c = rep_string.c_str();
+					system(cmd_str_c);
+					system(rep_str_c);
+					return 0;
+				}
+				// process png
+				else {
+					// process all PNG files in the directory
+					if (opt.contains("-a") || opt.contains("--all")){
+						found_file = "$(find " + found_r + " -iname \\*.png)";
+					}
+					// -f option : user specifies the full file path (to avoid name conflicts if multiple files with same substring)
+					else if (opt.contains("-f") || opt.contains("--file")) {
+						query_string = opt.get_last_positional();
+						found_file = "$(find " + found_r + " -iname " + query_string + ")";
+					}
+					else {
+						query_string = opt.get_last_positional();
+						found_file = "$(find " + found_r + " -iname \\*" + query_string + "\\*.png)";
+					}
+
+					command = "advpng -z -4";
+					string crunch_cmd = command + " " + found_file;
+					const char * crunch_cmd_c = crunch_cmd.c_str();
+					system(crunch_cmd_c);
+					return 0;
+				}
+			}
+			//TO DO: CSS compression
+
 		}
 		// GENERATE -----------------------------------------------------
 		else if (cmd == "generate") {
@@ -257,6 +322,9 @@ int main(int argc, char const *argv[]) {
 				}
 				else if (opt.contains("--mate")) {
 					edit_string = "mate $(find " + pttp_r + " -iname *";
+				}
+				else if (opt.contains("--mou")) {
+					edit_string = "open -a Mou $(find " + pttp_r + " -iname *";
 				}
 				else {
 					// Requires user to set $OCEDITOR bash variable to appropriate editor in .bashrc / .bash_profile startup file
@@ -404,6 +472,9 @@ int main(int argc, char const *argv[]) {
 				else if (opt.contains("--mate")) {
 					edit_string = "mate $(find " + pttp_r + " -iname *";
 				}
+				else if (opt.contains("--mou")) {
+					edit_string = "open -a Mou $(find " + pttp_r + " -iname *";
+				}
 				else {
 					// Requires user to set $OCEDITOR bash variable to appropriate editor in .bashrc / .bash_profile startup file
 					edit_string = "\"$OCEDITOR\" $(find " + pttp_r + " -iname *";
@@ -454,7 +525,7 @@ int main(int argc, char const *argv[]) {
 			int fail = 0;
 			print("Beginning Octopus tests...");
 			print(" ");
-			// Git test
+			// GIT TEST
 			if (system("which git") == 0){
 				print("> Git is installed.\n");
 			}
@@ -462,6 +533,7 @@ int main(int argc, char const *argv[]) {
 				fail = 1;
 				print("> FAIL: Git is not installed.\n");
 			}
+			// RUBY AND ASSOCIATED FILES TESTS
 			// Ruby test
 			if (system("which ruby") == 0) {
 				print("> Ruby is installed. Please confirm that it is version 1.9.3 in the line below:\n");
@@ -470,7 +542,7 @@ int main(int argc, char const *argv[]) {
 			}
 			else{
 				fail = 1;
-				print("> FAIL: Ruby is not installed.\n");
+				print("> FAIL: Ruby is not installed. You did not successfully install Octopress without Ruby.\n");
 			}
 			// Rake test
 			if (system("which rake") == 0){
@@ -478,7 +550,7 @@ int main(int argc, char const *argv[]) {
 			}
 			else{
 				fail = 1;
-				print("> FAIL: Rake is not installed.\n");
+				print("> FAIL: Rake is not installed.  This is an Octopress dependency.\n");
 			}
 			// Bundle test
 			if (system("which bundle") == 0) {
@@ -486,7 +558,7 @@ int main(int argc, char const *argv[]) {
 			}
 			else {
 				fail = 1;
-				print("> FAIL: Bundle is not installed.\n");
+				print("> FAIL: Bundle is not installed.  This is an Octopress dependency.\n");
 			}
 			//rsync test
 			if (system("which rsync") == 0) {
@@ -494,17 +566,9 @@ int main(int argc, char const *argv[]) {
 			}
 			else {
 				fail = 1;
-				print("> FAIL: rsync is not installed.\n");
+				print("> FAIL: rsync is not installed.  This is only significant if you use rsync to push your site to a remote server.\n");
 			}
-			// find test
-			if (system("which find") == 0) {
-				print("> find is installed.\n");
-			}
-			else {
-				fail = 1;
-				print("> FAIL: find is not installed.\n");
-			}
-			// Python tests
+			// PYTHON TESTS
 			if (system("which python") == 0){
 				print("> Python is installed.\n");
 			}
@@ -514,6 +578,24 @@ int main(int argc, char const *argv[]) {
 			else {
 				fail = 1;
 				print("> FAIL: Python is not installed.\n");
+			}
+			// SYSTEM TESTS
+			// find test
+			if (system("which find") == 0) {
+				print("> find is installed.\n");
+			}
+			else {
+				fail = 1;
+				print("> FAIL: find is not installed.  This affects multiple commands.\n");
+			}
+			// OTHER APPLICATIONS
+			// advpng = for PNG optimization with the crunch command
+			if (system("which advpng")) {
+				print("> advpng is installed.\n");
+			}
+			else {
+				fail = 1;
+				print("> FAIL: advpng is not installed. You will not be able to compress .png files with the crunch command.\n");
 			}
 			print("\n...Completed Octopus tests");
 			if (fail == 1){
