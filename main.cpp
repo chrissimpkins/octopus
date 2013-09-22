@@ -3,7 +3,7 @@
 */
 
 // Constant definitions
-#define VERSION string("0.2.10")
+#define VERSION string("0.2.11")
 #define APPLICATION string("Octopus | The Octopress Commander")
 #define COPYRIGHT string("Copyright 2013 Christopher Simpkins")
 #define LICENSE string("MIT License")
@@ -132,7 +132,7 @@ int main(int argc, char const *argv[]) {
 				print_error("Usage: oc crunch (--jpg|--png) <file name substring>");
 				return 1;
 			}
-			else if (argc > 2 && opt.get_last_positional().substr(0,1) == "-" && !opt.contains("--all") && !opt.contains("-a")) {
+			else if (opt.get_last_positional().substr(0,1) == "-" && !opt.contains("--all") && !opt.contains("-a")) {
 				// confirm that the option was not entered as the last positional argument (where file name substring should be)
 				print_error("Please enter your option before your filename substring.");
 				print_error("Usage: oc crunch (--jpg|--png) <file name substring>");
@@ -185,7 +185,7 @@ int main(int argc, char const *argv[]) {
 					return 0;
 				}
 			}
-			//TO DO: CSS compression
+			//TO DO: CSS & HTML compression
 
 		}
 		// GENERATE -----------------------------------------------------
@@ -324,7 +324,10 @@ int main(int argc, char const *argv[]) {
 					edit_string = "mate $(find " + pttp_r + " -iname *";
 				}
 				else if (opt.contains("--mou")) {
-					edit_string = "open -a Mou $(find " + pttp_r + " -iname *";
+					edit_string = "open -a mou $(find " + pttp_r + " -iname *";
+				}
+				else if (opt.contains("--lp")) {
+					edit_string = "open -a lightpaper $(find " + pttp_r + " -iname *";
 				}
 				else {
 					// Requires user to set $OCEDITOR bash variable to appropriate editor in .bashrc / .bash_profile startup file
@@ -473,7 +476,10 @@ int main(int argc, char const *argv[]) {
 					edit_string = "mate $(find " + pttp_r + " -iname *";
 				}
 				else if (opt.contains("--mou")) {
-					edit_string = "open -a Mou $(find " + pttp_r + " -iname *";
+					edit_string = "open -a mou $(find " + pttp_r + " -iname *";
+				}
+				else if (opt.contains("--lp")) {
+					edit_string = "open -a lightpaper $(find " + pttp_r + " -iname *";
 				}
 				else {
 					// Requires user to set $OCEDITOR bash variable to appropriate editor in .bashrc / .bash_profile startup file
@@ -652,12 +658,13 @@ inline void show_help() {
 	print("  oc <command> [-shortoption] [--longoption] <argument(s)>\n");
 	// HELP INFO
 	print("Available Commands:");
+	print("  crunch  \t          compress JS and CSS files");
 	print("  doctor  \t          run checks for dependencies");
 	print("  edit <post substr>\t  edit a post Markdown file");
 	print("  find <post substr>\t  find Markdown file by filename substring");
 	print("  generate  \t          generate new static site files (HTML + CSS)");
 	print("  help  \t          view help documentation");
-	print("  list  \t          list your post markdown files");
+	print("  list  \t          list your post Markdown files");
 	print("  page <page name> \t  create a new page and specify file name");
 	print("  peek <directory> \t  view contents of an Octopress directory");
 	print("  post <post name> \t  create a new post and specify file name");
@@ -757,6 +764,23 @@ inline int isDirPresent(string& dir) {
 	}
 	else {
 		//directory not present, return 0
+		return 0;
+	}
+}
+
+/******************************************
+*  Check for Presence of a File
+*******************************************/
+inline int isFilePresent(string& file) {
+	const char * pathname = file.c_str();
+	struct stat sb;
+	if (stat(pathname, &sb) == 0 && S_ISREG(sb.st_mode))
+	{
+		//file present, return 1
+	    return 1;
+	}
+	else {
+		//file not present, return 0
 		return 0;
 	}
 }
