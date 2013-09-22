@@ -6,7 +6,7 @@
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <url>
   <loc>http://chrissimpkins.github.io/octopus/</loc>
-  <lastmod>2013-09-05T23:54:59+00:00</lastmod>
+  <lastmod>2013-09-22T23:54:59+00:00</lastmod>
   <changefreq>daily</changefreq>
   <priority>1.00</priority>
 </url>
@@ -18,7 +18,7 @@
 </url>
 <url>
   <loc>http://chrissimpkins.github.io/octopus/cmd_edit.html</loc>
-  <lastmod>2013-09-05T02:54:59+00:00</lastmod>
+  <lastmod>2013-09-22T02:54:59+00:00</lastmod>
   <changefreq>daily</changefreq>
   <priority>0.80</priority>
 </url>
@@ -53,6 +53,12 @@
   <priority>0.80</priority>
 </url>
 <url>
+  <loc>http://chrissimpkins.github.io/octopus/cmd_peek.html</loc>
+  <lastmod>2013-09-22T18:40:59+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
   <loc>http://chrissimpkins.github.io/octopus/cmd_post.html</loc>
   <lastmod>2013-09-05T02:54:59+00:00</lastmod>
   <changefreq>daily</changefreq>
@@ -78,7 +84,7 @@
 </url>
 <url>
   <loc>http://chrissimpkins.github.io/octopus/cmd_write.html</loc>
-  <lastmod>2013-09-05T02:54:59+00:00</lastmod>
+  <lastmod>2013-09-22T02:54:59+00:00</lastmod>
   <changefreq>daily</changefreq>
   <priority>0.80</priority>
 </url>
@@ -96,7 +102,7 @@
 </url>
 <url>
   <loc>http://chrissimpkins.github.io/octopus/index.html</loc>
-  <lastmod>2013-09-05T23:54:59+00:00</lastmod>
+  <lastmod>2013-09-22T23:54:59+00:00</lastmod>
   <changefreq>daily</changefreq>
   <priority>1.00</priority>
 </url>
