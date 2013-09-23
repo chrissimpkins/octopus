@@ -538,76 +538,83 @@ int main(int argc, char const *argv[]) {
 			print("Beginning Octopus tests...");
 			print(" ");
 			// GIT TEST
-			if (system("which git") == 0){
-				print("> Git is installed.\n");
+			if (system("which git >&-") == 0){
+				print("## Git is installed.");
 			}
 			else{
 				fail = 1;
-				print("> FAIL: Git is not installed.\n");
+				print("## FAIL: Git is not installed.\n");
 			}
 			// RUBY AND ASSOCIATED FILES TESTS
 			// Ruby test
-			if (system("which ruby") == 0) {
-				print("> Ruby is installed. Please confirm that it is version 1.9.3 in the line below:\n");
+			if (system("which ruby >&-") == 0) {
+				print("## Ruby is installed. Please confirm that it is version 1.9.3 in the line below:\n");
 				system("ruby --version");
 				print("\n");
 			}
 			else{
 				fail = 1;
-				print("> FAIL: Ruby is not installed. You did not successfully install Octopress without Ruby.\n");
+				print("## FAIL: Ruby is not installed. You did not successfully install Octopress without Ruby.\n");
 			}
 			// Rake test
-			if (system("which rake") == 0){
-				print("> Rake is installed.\n");
+			if (system("which rake >&-") == 0){
+				print("## Rake is installed.");
 			}
 			else{
 				fail = 1;
-				print("> FAIL: Rake is not installed.  This is an Octopress dependency.\n");
+				print("## FAIL: Rake is not installed.  This is an Octopress dependency.\n");
 			}
 			// Bundle test
-			if (system("which bundle") == 0) {
-				print("> Bundle is installed.\n");
+			if (system("which bundle >&-") == 0) {
+				print("## Bundle is installed.");
 			}
 			else {
 				fail = 1;
-				print("> FAIL: Bundle is not installed.  This is an Octopress dependency.\n");
+				print("## FAIL: Bundle is not installed.  This is an Octopress dependency.\n");
 			}
 			//rsync test
-			if (system("which rsync") == 0) {
-				print("> rsync is installed.\n");
+			if (system("which rsync >&-") == 0) {
+				print("## rsync is installed.");
 			}
 			else {
 				fail = 1;
-				print("> FAIL: rsync is not installed.  This is only significant if you use rsync to push your site to a remote server.\n");
+				print("## FAIL: rsync is not installed.  This is only significant if you use rsync to push your site to a remote server.\n");
 			}
 			// PYTHON TESTS
-			if (system("which python") == 0){
-				print("> Python is installed.\n");
+			if (system("which python >&-") == 0){
+				print("## Python is installed.");
 			}
-			else if (system("which python3") == 0) {
-				print("> Python 3 is installed.\n");
+			else if (system("which python3 >&-") == 0) {
+				print("## Python 3 is installed.");
 			}
 			else {
 				fail = 1;
-				print("> FAIL: Python is not installed.\n");
+				print("## FAIL: Python is not installed.\n");
 			}
 			// SYSTEM TESTS
 			// find test
-			if (system("which find") == 0) {
-				print("> find is installed.\n");
+			if (system("which find >&-") == 0) {
+				print("## find is installed.");
 			}
 			else {
 				fail = 1;
-				print("> FAIL: find is not installed.  This affects multiple commands.\n");
+				print("## FAIL: find is not installed.  This affects multiple commands.\n");
 			}
 			// OTHER APPLICATIONS
 			// advpng = for PNG optimization with the crunch command
-			if (system("which advpng") == 0) {
-				print("> advpng is installed.\n");
+			if (system("which advpng >&-") == 0) {
+				print("## advpng is installed.");
 			}
 			else {
 				fail = 1;
-				print("> FAIL: advpng is not installed. You will not be able to compress .png files with the crunch command.\n");
+				print("## FAIL: advpng is not installed. You will not be able to compress .png files with the crunch command.\n");
+			}
+			if (system("which jpegtran >&-") == 0) {
+				print("## jpegtran is installed.");
+			}
+			else{
+				fail = 1;
+				print("## FAIL: jpegtran is not installed. jpeg compression will not work.");
 			}
 			print("\n...Completed Octopus tests");
 			if (fail == 1){
