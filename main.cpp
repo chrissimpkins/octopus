@@ -602,7 +602,7 @@ int main(int argc, char const *argv[]) {
 			}
 			// OTHER APPLICATIONS
 			// advpng = for PNG optimization with the crunch command
-			if (system("which advpng")) {
+			if (system("which advpng") == 0) {
 				print("> advpng is installed.\n");
 			}
 			else {
