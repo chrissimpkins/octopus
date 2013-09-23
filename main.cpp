@@ -152,7 +152,13 @@ int main(int argc, char const *argv[]) {
 				// process jpg
 				if (opt.contains("--jpg")) {
 					query_string = opt.get_last_positional();
-					found_file = "$(find " + found_r + " -iname \\*" + query_string + "\\*.jpg)";
+					if (opt.contains("-f") || opt.contains("--file")) {
+						found_file = "$(find " + found_r + " -iname " + query_string + ")";
+					}
+					else {
+						found_file = "$(find " + found_r + " -iname \\*" + query_string + "\\*.jpg)";
+					}
+
 					command = "jpegtran -copy none -optimize -progressive";
 					string cmd_string = command + " " + found_file + ">" + found_file + ".tmp";
 					string rep_string = "mv " + found_file + ".tmp " + found_file;
