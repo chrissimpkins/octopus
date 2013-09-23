@@ -664,7 +664,7 @@ inline void show_help() {
 	print("  oc <command> [-shortoption] [--longoption] <argument(s)>\n");
 	// HELP INFO
 	print("Available Commands:");
-	print("  crunch  \t          compress JS and CSS files");
+	print("  crunch  \t          compress png and jpg files");
 	print("  doctor  \t          run checks for dependencies");
 	print("  edit <post substr>\t  edit a post Markdown file");
 	print("  find <post substr>\t  find Markdown file by filename substring");
