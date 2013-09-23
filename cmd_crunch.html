@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" media="all" href="css/main.css">
+	<link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+	<link href='http://fonts.googleapis.com/css?family=Merriweather:400,700,700italic,400italic' rel='stylesheet' type='text/css'>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+
+<title>crunch Command Documentation | Octopus</title>
+<meta name="description" content="Documentation for the Octopus crunch command.  This command compresses files.">
+<meta name="keywords" content="octopus, octopress, jpg, png, compression, command, documentation, crunch, how to use, docs">
+
+<!--[if lt IE 9]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-43699107-1', 'chrissimpkins.github.io');
+  ga('send', 'pageview');
+
+</script>
+</head>
+
+<body style="zoom: 1;">
+
+	<article id="content">
+		<header>
+			<a id="logo" href="index.html">OC</a>
+		</header>
+		<section id="post">
+
+			<h1 class="section_separator">
+				octopus | the octopress commander
+			</h1>
+			<hr>
+			<article class="post">
+
+<h1>crunch</h1>
+<p>The crunch command performs compression of .png and .jpg files.  You can perform your compression from any directory inside your Octopress site. It is not necessary for the images directory to be the working directory when you run the command.</p>
+<h2></h2>
+<h1>Usage</h1>
+<pre><code><span class="lavender">oc crunch</span> (--option) &lt;filename substring&gt;</code></pre>
+<h1>Arguments</h1>
+<table border="1">
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>image filename substring</td>
+<td>a substring in the image filename</td>
+</tr>
+</table>
+<h1>Mandatory Switches</h1>
+<table border="1">
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>--jpg</td>
+<td>Compress .jpg file</td>
+</tr>
+<tr>
+<td>--png</td>
+<td>Compress .png file</td>
+</tr>
+</table>
+<h1>Options</h1>
+<table border="1">
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>-a | --all</td>
+<td>Compress all files in directory (png only)</td>
+</tr>
+<tr>
+<td>-f | --file</td>
+<td>Specify full filepath (instead of substring search)</td>
+</tr>
+</table>
+<h1>Examples</h1>
+<h3>Compression of 'beach.jpg'</h3>
+<pre><code><span class="lavender">oc crunch</span> --jpg beach</code></pre>
+<h3>Compression of 'beach.png'</h3>
+<pre><code><span class="lavender">oc crunch</span> --png beach</code></pre>
+<h3>Compress all .png files in directory</h3>
+<pre><code><span class="lavender">oc crunch</span> --png --all</code></pre>
+<h3>Compress file by specifying full filename</h3>
+<pre><code><span class="lavender">oc crunch</span> --png -f beach.png</code></pre>
+<h1>Notes</h1>
+<p>The -f (or --file) option allows you to specify the exact filename in order to prevent multiple file matches with the substring matching pattern *your-substring*.png that is used with the default command.</p>
+<p>Here's an example:</p>
+<p>You have the files big-octopus.png and big-octopus-2.png.  If you use the default command and attempt to match the former file, you will always match the latter file as well because the match is performed with the pattern *big-octopus*.png.  The solution is to use the -f switch with big-octopus.png as the argument.</p>
+
+			</article><!-- end of .post -->
+		</section><!-- end of #post -->
+
+		<footer>
+			<h1 class="section_separator"><span></span></h1>
+
+			<nav><a href="index.html">Home</a>&nbsp;|&nbsp;<a href="index.html#commandlist">Commands</a>&nbsp;|&nbsp;<a href="https://github.com/chrissimpkins/octopus">Source</a></nav>
+			<p class="centertext"><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">CC-SA 3.0</a></p>
+		</footer>
+
+	</article><!-- end of #content -->
+  </body>
+</html>
