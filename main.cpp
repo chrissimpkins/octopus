@@ -3,7 +3,7 @@
 */
 
 // Constant definitions
-#define VERSION string("0.2.11")
+#define VERSION string("0.2.12")
 #define APPLICATION string("Octopus | The Octopress Commander")
 #define COPYRIGHT string("Copyright 2013 Christopher Simpkins")
 #define LICENSE string("MIT License")
@@ -191,7 +191,7 @@ int main(int argc, char const *argv[]) {
 					return 0;
 				}
 			}
-			//TO DO: CSS & HTML compression
+			//TO DO: JS & CSS & HTML compression - create repositories for YUI + html compressor
 
 		}
 		// GENERATE -----------------------------------------------------
@@ -537,20 +537,12 @@ int main(int argc, char const *argv[]) {
 			int fail = 0;
 			print("Beginning Octopus tests...");
 			print(" ");
-			// GIT TEST
-			if (system("which git >&-") == 0){
-				print("## Git is installed.");
-			}
-			else{
-				fail = 1;
-				print("## FAIL: Git is not installed.\n");
-			}
 			// RUBY AND ASSOCIATED FILES TESTS
 			// Ruby test
 			if (system("which ruby >&-") == 0) {
 				print("## Ruby is installed. Please confirm that it is version 1.9.3 in the line below:\n");
 				system("ruby --version");
-				print("\n");
+				print(" ");
 			}
 			else{
 				fail = 1;
@@ -579,6 +571,14 @@ int main(int argc, char const *argv[]) {
 			else {
 				fail = 1;
 				print("## FAIL: rsync is not installed.  This is only significant if you use rsync to push your site to a remote server.\n");
+			}
+			// GIT TEST
+			if (system("which git >&-") == 0){
+				print("## Git is installed.");
+			}
+			else{
+				fail = 1;
+				print("## FAIL: Git is not installed.\n");
 			}
 			// PYTHON TESTS
 			if (system("which python >&-") == 0){
@@ -625,10 +625,7 @@ int main(int argc, char const *argv[]) {
 			}
 		}
 		else if (cmd == "test") {
-			string path = "";
-			string& path_r = path;
-			pathToPosts(path_r);
-			print(path_r);
+
 		}
 		//otherwise if a second argument is present print error message that the second argument is not a known command or option
 		else {
