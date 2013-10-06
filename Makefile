@@ -4,38 +4,38 @@ CXXFLAGS = -std=c++11 -stdlib=libc++ -Wall -g
 CXXFLAGS_GPP = -std=c++11 -Wall -g
 DEBUGFLAGS = -pedantic -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wmissing-declarations -Wmissing-include-dirs -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-overflow=5 -Wswitch-default -Wundef -Werror -Wno-unused
 OPTIMIZATION = -O3
-OBJECTS = main.o opts.o io.o
-OBJECTS_GPP = main_gpp.o opts_gpp.o io_gpp.o
+OBJECTS = src/main.o src/opts.o src/io.o
+OBJECTS_GPP = src/main_gpp.o src/opts_gpp.o src/io_gpp.o
 
 INSTALL_PATH?=/usr/local
 
 all: oc
 
-main.o: main.cpp main.h opts.h print.h
-	${COMPILER} ${CXXFLAGS} ${OPTIMIZATION} -c main.cpp
+main.o: src/main.cpp src/main.h src/opts.h src/print.h
+	${COMPILER} ${CXXFLAGS} ${OPTIMIZATION} -c src/main.cpp
 
-opts.o: opts.cpp opts.h print.h
-	${COMPILER} ${CXXFLAGS} ${OPTIMIZATION} -c opts.cpp
+opts.o: src/opts.cpp src/opts.h src/print.h
+	${COMPILER} ${CXXFLAGS} ${OPTIMIZATION} -c src/opts.cpp
 
-io.o: io.cpp io.h print.h
-	${COMPILER} ${CXXFLAGS} ${OPTIMIZATION} -c io.cpp
+io.o: src/io.cpp src/io.h src/print.h
+	${COMPILER} ${CXXFLAGS} ${OPTIMIZATION} -c src/io.cpp
 
 oc: ${OBJECTS}
-	${COMPILER} ${CXXFLAGS} ${OPTIMIZATION} ${OBJECTS} -o oc
+	${COMPILER} ${CXXFLAGS} ${OPTIMIZATION} ${OBJECTS} -o src/oc
 
 gpp: ocgpp
 
-main_gpp.o: main.cpp main.h opts.h print.h
-	${COMPILER_GPP} ${CXXFLAGS_GPP} ${OPTIMIZATION} -c main.cpp
+main_gpp.o: src/main.cpp src/main.h src/opts.h src/print.h
+	${COMPILER_GPP} ${CXXFLAGS_GPP} ${OPTIMIZATION} -c src/main.cpp
 
-opts_gpp.o: opts.cpp opts.h print.h
-	${COMPILER_GPP} ${CXXFLAGS_GPP} ${OPTIMIZATION} -c opts.cpp
+opts_gpp.o: src/opts.cpp src/opts.h src/print.h
+	${COMPILER_GPP} ${CXXFLAGS_GPP} ${OPTIMIZATION} -c src/opts.cpp
 
-io_gpp.o: io.cpp io.h print.h
-	${COMPILER_GPP} ${CXXFLAGS_GPP} ${OPTIMIZATION} -c io.cpp
+io_gpp.o: src/io.cpp src/io.h src/print.h
+	${COMPILER_GPP} ${CXXFLAGS_GPP} ${OPTIMIZATION} -c src/io.cpp
 
 ocgpp: ${OBJECTS_GPP}
-	${COMPILER_GPP} ${CXXFLAGS_GPP} ${OPTIMIZATION} ${OBJECTS} -o oc
+	${COMPILER_GPP} ${CXXFLAGS_GPP} ${OPTIMIZATION} ${OBJECTS} -o src/oc
 
 install: oc
-	cp -f oc ${INSTALL_PATH}/bin/oc
+	cp -f src/oc ${INSTALL_PATH}/bin/oc

@@ -3,7 +3,7 @@
 */
 
 // Constant definitions
-#define VERSION string("0.2.12")
+#define VERSION string("0.2.13")
 #define APPLICATION string("Octopus | The Octopress Commander")
 #define COPYRIGHT string("Copyright 2013 Christopher Simpkins")
 #define LICENSE string("MIT License")
@@ -625,7 +625,14 @@ int main(int argc, char const *argv[]) {
 			}
 		}
 		else if (cmd == "test") {
-
+			string sassdir = "sass";
+			string srcdir = "source";
+			if (isDirPresent(sassdir) && isDirPresent(srcdir)) {
+				print("True");
+			}
+			else{
+				print("False");
+			}
 		}
 		//otherwise if a second argument is present print error message that the second argument is not a known command or option
 		else {
