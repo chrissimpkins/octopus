@@ -3,7 +3,7 @@
 */
 
 // Constant definitions
-#define VERSION string("0.2.13")
+#define VERSION string("0.2.14")
 #define APPLICATION string("Octopus | The Octopress Commander")
 #define COPYRIGHT string("Copyright 2013 Christopher Simpkins")
 #define LICENSE string("MIT License")
@@ -438,6 +438,39 @@ int main(int argc, char const *argv[]) {
 				system(prev_string_cstr);
 			}
 		}
+		// SEARCH -------------------------------------------------------
+		else if (cmd == "search") {
+			if (argc < 3) {
+				print_error("Please include the search string with the search command.");
+				print_error("Usage: oc search <search_string>");
+			}
+			Options opt(argc, clvr);
+			string search_pre = "grep ";
+			//Case Insensitive Match Switch: ignore case
+			if (opt.contains("-i")){
+				search_pre += "-i ";
+			}
+			//List Filename Switch: list file names without matched strings
+			if (opt.contains("-l") || opt.contains("--list")){
+				search_pre += "-l ";
+			}
+			//Extended regular expression syntax switch
+			if (opt.contains("-e")){
+				search_pre += "-E ";
+			}
+			string search_post = "*.markdown"; //default to markdown files in the _posts directory
+			string query = "'" + opt.get_last_positional() + "'";
+			string posts_path = "";
+			pathToPosts(posts_path);
+			posts_path = posts_path + "/" + search_post;
+			string search_string = search_pre + query + " " + posts_path;
+			const char* c_search_string = search_string.c_str();
+			if (system(c_search_string) != 0) {
+				string error_msg = "Unable to find a match for your query ==> " + query;
+				print_error(error_msg);
+				return 1;
+			}
+		}
 		// WATCH --------------------------------------------------------
 		else if (cmd == "watch") {
 			const char * watch_string = "bundle exec rake watch";
@@ -540,81 +573,81 @@ int main(int argc, char const *argv[]) {
 			// RUBY AND ASSOCIATED FILES TESTS
 			// Ruby test
 			if (system("which ruby >&-") == 0) {
-				print("## Ruby is installed. Please confirm that it is version 1.9.3 in the line below:\n");
+				print("==> Ruby is installed. Please confirm that it is version 1.9.3 in the line below:\n");
 				system("ruby --version");
 				print(" ");
 			}
 			else{
 				fail = 1;
-				print("## FAIL: Ruby is not installed. You did not successfully install Octopress without Ruby.\n");
+				print("==> FAIL: Ruby is not installed. You did not successfully install Octopress without Ruby.\n");
 			}
 			// Rake test
 			if (system("which rake >&-") == 0){
-				print("## Rake is installed.");
+				print("==> Rake is installed.");
 			}
 			else{
 				fail = 1;
-				print("## FAIL: Rake is not installed.  This is an Octopress dependency.\n");
+				print("==> FAIL: Rake is not installed.  This is an Octopress dependency.\n");
 			}
 			// Bundle test
 			if (system("which bundle >&-") == 0) {
-				print("## Bundle is installed.");
+				print("==> Bundle is installed.");
 			}
 			else {
 				fail = 1;
-				print("## FAIL: Bundle is not installed.  This is an Octopress dependency.\n");
+				print("==> FAIL: Bundle is not installed.  This is an Octopress dependency.\n");
 			}
 			//rsync test
 			if (system("which rsync >&-") == 0) {
-				print("## rsync is installed.");
+				print("==> rsync is installed.");
 			}
 			else {
 				fail = 1;
-				print("## FAIL: rsync is not installed.  This is only significant if you use rsync to push your site to a remote server.\n");
+				print("==> FAIL: rsync is not installed.  This is only significant if you use rsync to push your site to a remote server.\n");
 			}
 			// GIT TEST
 			if (system("which git >&-") == 0){
-				print("## Git is installed.");
+				print("==> Git is installed.");
 			}
 			else{
 				fail = 1;
-				print("## FAIL: Git is not installed.\n");
+				print("==> FAIL: Git is not installed.\n");
 			}
 			// PYTHON TESTS
 			if (system("which python >&-") == 0){
-				print("## Python is installed.");
+				print("==> Python is installed.");
 			}
 			else if (system("which python3 >&-") == 0) {
-				print("## Python 3 is installed.");
+				print("==> Python 3 is installed.");
 			}
 			else {
 				fail = 1;
-				print("## FAIL: Python is not installed.\n");
+				print("==> FAIL: Python is not installed.\n");
 			}
 			// SYSTEM TESTS
 			// find test
 			if (system("which find >&-") == 0) {
-				print("## find is installed.");
+				print("==> find is installed.");
 			}
 			else {
 				fail = 1;
-				print("## FAIL: find is not installed.  This affects multiple commands.\n");
+				print("==> FAIL: find is not installed.  This affects multiple commands.\n");
 			}
 			// OTHER APPLICATIONS
 			// advpng = for PNG optimization with the crunch command
 			if (system("which advpng >&-") == 0) {
-				print("## advpng is installed.");
+				print("==> advpng is installed.");
 			}
 			else {
 				fail = 1;
-				print("## FAIL: advpng is not installed. You will not be able to compress .png files with the crunch command.\n");
+				print("==> FAIL: advpng is not installed. You will not be able to compress .png files with the crunch command.\n");
 			}
 			if (system("which jpegtran >&-") == 0) {
-				print("## jpegtran is installed.");
+				print("==> jpegtran is installed.");
 			}
 			else{
 				fail = 1;
-				print("## FAIL: jpegtran is not installed. jpeg compression will not work.");
+				print("==> FAIL: jpegtran is not installed. jpeg compression will not work.");
 			}
 			print("\n...Completed Octopus tests");
 			if (fail == 1){
@@ -687,6 +720,7 @@ inline void show_help() {
 	print("  post <post name> \t  create a new post and specify file name");
 	print("  preview  \t          open local server to view your site");
 	print("  publish             \t  publish your site");
+	print("  search <query>\t  search posts for query string");
 	print("  version  \t          view current version number");
 	print("  watch  \t          watch the source and SASS directories for changes");
 	print("  write <post substr> \t  edit file, open local server, watch for changes");
